@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # map is the set of vertex coordinate
     # matrix is the edge relation
     s = buildGraph(map,matrix)
-    s.print()
+    #s.print()
     points = np.array(map)
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=1.5)
     for edge in s.edgeList.values():
@@ -75,10 +75,10 @@ if __name__ == "__main__":
 
     # map an edge to its next edge
     mv1 = s.replace_by_edge(3,8)
-    print("is mapped to " + "% s" % mv1 )
+    #print("is mapped to " + "% s" % mv1 )
 
     mv = s.replace_by_vertex(8,5)
-    print("is mapped to " + "% s" % mv )
+    #print("is mapped to " + "% s" % mv )
     #s.get_edge_set()
 
     plt.show()

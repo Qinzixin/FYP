@@ -1,5 +1,6 @@
 from vertex import Vertex
 import math
+import copy
 
 
 class Graph:
@@ -25,10 +26,10 @@ class Graph:
         def get_angle(edge):
             return edge.angle
         begin_edge = self.edgeList[e_id]
-        print("\nthe starting edge is %i", e_id)
+        print("\nstarting edge ", e_id)
         trans_vertex = self.verList.get(transition_id)
-        print("the transition point is %i",  transition_id)
-        list = trans_vertex.edges
+        print("transition point ",  transition_id)
+        list = copy.copy(trans_vertex.edges)
         print("the list is")
 
         cardinality = len(list)
@@ -53,14 +54,14 @@ class Graph:
             if dot > 0:
                 cos_theta = result # big bug!!! avoid using arc cos!!!
             else :
-                cos_theta = 2 - result
+                cos_theta = -2 - result
 
-            print( edge.id ,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
+            print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
             edge.angle = cos_theta
         sorted_edges = sorted(list, key = get_angle)
-        for edge in sorted_edges:
-            print("angle = %s" % edge.angle)
-            print(self.verList[edge.fro].x,self.verList[edge.fro].y,self.verList[edge.to].x,self.verList[edge.to].y)
+        #for edge in sorted_edges:
+            #print("angle = %s" % edge.angle)
+            #print(self.verList[edge.fro].x,self.verList[edge.fro].y,self.verList[edge.to].x,self.verList[edge.to].y)
 
         if sorted_edges and trans_vertex:
             next_edge = sorted_edges[0]
