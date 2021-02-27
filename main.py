@@ -11,7 +11,7 @@ from graph import Graph
 map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
 
 # edge : start node, end node and length
-matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7]]
+matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
 
 
 def buildGraph(vertices,edges):
@@ -80,5 +80,7 @@ if __name__ == "__main__":
     mv = s.replace_by_vertex(8,5)
     #print("is mapped to " + "% s" % mv )
     #s.get_edge_set()
+
+    s.get_boundary_edges
 
     plt.show()

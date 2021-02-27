@@ -11,6 +11,8 @@ class Graph:
         self.numEdges = 0
         self.edge_repl = {}
         self.vertex_repl = {}
+        self.boundary = []
+
 
     def get_edge_set(self):
         return self.edgeList
@@ -26,11 +28,11 @@ class Graph:
         def get_angle(edge):
             return edge.angle
         begin_edge = self.edgeList[e_id]
-        print("\nstarting edge ", e_id)
+        # print("\nstarting edge ", e_id)
         trans_vertex = self.verList.get(transition_id)
-        print("transition point ",  transition_id)
+        # print("transition point ",  transition_id)
         list = copy.copy(trans_vertex.edges)
-        print("the list is")
+        # print("the list is")
 
         cardinality = len(list)
         for j in range(cardinality):
@@ -56,7 +58,7 @@ class Graph:
             else :
                 cos_theta = -2 - result
 
-            print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
+            # print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
             edge.angle = cos_theta
         sorted_edges = sorted(list, key = get_angle)
         #for edge in sorted_edges:
@@ -65,8 +67,8 @@ class Graph:
 
         if sorted_edges and trans_vertex:
             next_edge = sorted_edges[0]
-            print("next edge:")
-            print(next_edge.id)
+            # print("next edge:")
+            # print(next_edge.id)
             return next_edge.id
         else:
             return None
@@ -140,3 +142,26 @@ class Graph:
             self.edge_repl[f,edge.id] = t
 
             self.edgeList[edge.id]= edge
+
+    @property
+    def get_boundary_edges(self):
+        boundary=[]
+        arrow_cnt = self.numEdges;
+        def get_anti_edge(eid):
+            return eid + 1;
+        def three_edge_trial(e):
+            t1 = self.replace_by_vertex(e,self.edgeList[e].to)
+            t2 = self.replace_by_vertex(t1, self.edgeList[t1].to)
+            t3 = self.replace_by_vertex(t2, self.edgeList[t2].to)
+            print(e)
+            print(e==t3)
+            if e == t3:
+                return True # this is a inner edge candidate
+            return False
+        for k in range(0,arrow_cnt,2):
+            anti_k = get_anti_edge(k)
+            if not (three_edge_trial(k)  and three_edge_trial(anti_k)):
+                boundary.append(k)
+                boundary.append(anti_k)
+        print(boundary)
+        return
