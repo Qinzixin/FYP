@@ -47,11 +47,13 @@ def buildGraph(vertices,edges):
             end_vertex = graph.verList[to]
             # compute the edge's gradient
             gradient = (start_vertex.y - end_vertex.y)/(start_vertex.x - end_vertex.x)
+            # compute the edge's length
+            length = (1.0 + pow(gradient,2))*abs(start_vertex.x - end_vertex.x)
             '''
               construct edges
             '''
             # generate a edge object
-            new_edge = Edge(e,weight, fro, to, gradient)
+            new_edge = Edge(e,weight, fro, to, gradient,length)
             # append to edge list: id -> edge object
             graph.addEdge(new_edge)
             e= e+1
@@ -81,7 +83,8 @@ if __name__ == "__main__":
     #print("is mapped to " + "% s" % mv )
     #s.get_edge_set()
 
-    bd = s.get_boundary_edges
-    s.get_boundary_vertex(bd)
+    bd_e = s.get_boundary_edges
+    bd_v = s.get_boundary_vertex(bd_e)
+    bd_v_sorted = s.sort_egdes(bd_e)
 
     plt.show()

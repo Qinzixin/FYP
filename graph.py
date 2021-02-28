@@ -176,4 +176,16 @@ class Graph:
                     bd_nodes.append(node)
                     break
         print(bd_nodes)
+        return  bd_nodes
+
+    def sort_egdes(self,edge_list):
+        bd_edges = []
+        for edge_id in edge_list:
+            bd_edges.append(self.edgeList[edge_id])
+        bd_edges.sort(key=lambda x:x.length)
+        bd_edges_index = []
+        for edge in bd_edges:
+            bd_edges_index.append(edge.id)
+        print(bd_edges_index)
+        return  bd_edges_index
 

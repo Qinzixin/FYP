@@ -15,9 +15,9 @@ Type of study: Theoretical Study
 2021.2.28
  - To be finished
    -  **generate the "ext point set"**, done (2.28)
-        - leaving one potential bug 
-        - the boundary could not be stored as global variable (better to use pointer or global variable?)
-   -  sort the edges
+       -  ~~leaving one potential bug: the boundary could not be stored as global variable (better to use pointer or global variable?)~~
+        - use pointer, ideally not contaning global vairable
+   -  **sort the edges**, done (2.28)
    - find the replace edge
    - experiment
 
