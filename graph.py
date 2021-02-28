@@ -164,4 +164,16 @@ class Graph:
                 boundary.append(k)
                 boundary.append(anti_k)
         print(boundary)
-        return
+        return boundary
+
+    def get_boundary_vertex(self,boundary):
+        bd_nodes = []
+        for node in self.verList:
+            self.verList[node].bd = False
+            for bd in boundary:
+                if self.edgeList[bd].fro == node or self.edgeList[bd].to == node:
+                    self.verList[node].bd = True
+                    bd_nodes.append(node)
+                    break
+        print(bd_nodes)
+

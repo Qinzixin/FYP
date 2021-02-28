@@ -81,6 +81,7 @@ if __name__ == "__main__":
     #print("is mapped to " + "% s" % mv )
     #s.get_edge_set()
 
-    s.get_boundary_edges
+    bd = s.get_boundary_edges
+    s.get_boundary_vertex(bd)
 
     plt.show()

@@ -3,6 +3,7 @@ class Vertex:
         self.id = key
         self.x = x
         self.y = y
+        self.bd = False
 
         self.connectedTo = {}  # 领结列表，表示为字典，表示领居顶点
         # id -> weight
