@@ -190,21 +190,36 @@ class Graph:
         print(bd_edges_index)
         return  bd_edges_index
 
-    def edge_elimination(self, edge_list,l, bd_v):
+    def edge_elimination(self, edge_list,l, bd):
+        def get_anti_edge(eid):
+            return eid + 1;
+
         def regular(edge_id):
+            reveal = -1
             edge = self.edgeList[edge_id]
-            arrow = edge.fro
-            incident_vertex = self.replace_by_edge(arrow,edge_id)
-            reveal_edge_1 = self.replace_by_vertex(edge_id,incident_vertex)
-            reveal_vertex = self.replace_by_edge(incident_vertex,reveal_edge_1)
-            if reveal_vertex in bd_v:
+            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro)
+
+            reveal_edge_1 = self.replace_by_vertex(edge_id,edge.to)
+            inner_vertex = self.replace_by_edge(edge.to,reveal_edge_1)
+
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1,inner_vertex)
+            out_vertex = self.replace_by_edge(inner_vertex,reveal_edge_2)
+
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2,out_vertex)
+
+            if reveal_edge_3 == edge_id:
+                reveal = reveal_edge_1
+            else:
+                reveal = reveal_edge_0
+            if reveal in bd:
                 return False
             else:
                 return True
 
         while len(edge_list)!=0 :
             e = edge_list.pop()
-            if( self.edgeList[e].length>l and regular(e)):
+            if regular(e):
+                # self.edgeList[e].length>l
                 print(e)
             else:
                 print(e," is not regular")

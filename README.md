@@ -21,10 +21,10 @@ Type of study: Theoretical Study
    -  **sort the edges**, done (2.28)
 - Under implementation 
    - find the replace edge
-      - understand what is "reference","copy" and "deep copy". Reference should be used.(3.1)
+      - ~~what is "reference","copy" and "deep copy"?~~ Reference should be used.(3.1)
       - what is decorator (@property)?
       - **edge_elimination** patial implemented
-      - **reveal** to be implemented
+      - **reveal** finished (3.1)
    - experiment
 
 
