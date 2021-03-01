@@ -19,12 +19,14 @@ Type of study: Theoretical Study
        -  ~~leaving one potential bug: the boundary could not be stored as global variable (better to use pointer or global variable?)~~
         - use pointer, ideally not contaning global vairable
    -  **sort the edges**, done (2.28)
+   -  **reveal** finished (3.1)
 - Under implementation 
    - find the replace edge
       - ~~what is "reference","copy" and "deep copy"?~~ Reference should be used.(3.1)
       - what is decorator (@property)?
       - **edge_elimination** patial implemented
-      - **reveal** finished (3.1)
+          - **remove edge** find it hard to do this gracefully.
+          - insert reveal, update vertex's status
    - experiment
 
 

@@ -13,17 +13,17 @@ class Graph:
         self.vertex_repl = {}
         self.boundary = []
 
-
     def get_edge_set(self):
         return self.edgeList
 
+#调用的 edgeList
     def replace_by_edge(self,v_id,e_id):
         def generate_rpl_edge():
             for edge in self.edgeList.values(): # edge is the object
                 self.edge_repl[edge.fro,edge.id] = edge.to
         generate_rpl_edge() # the dictionary for all edge's linkage relationship
         return self.edge_repl.get((v_id,e_id),"None")
-
+#图变化后需要重新生成
     def the_clockwise_edge(self,e_id, transition_id):
         def get_angle(edge):
             return edge.angle
@@ -72,7 +72,7 @@ class Graph:
             return next_edge.id
         else:
             return None
-
+#图变化后需要重新生成
     def replace_by_vertex(self,e_id,transition_id):
         def generate_rpl_vertex():
             for edge in self.edgeList.values():
@@ -80,7 +80,6 @@ class Graph:
                 self.vertex_repl[edge.id,vertex] = self.the_clockwise_edge(edge.id,vertex) #连接的最近的边的id
         generate_rpl_vertex()
         return self.vertex_repl.get((e_id,transition_id),"None")
-
 
     def get_vertex_set(self):
         return self.verList
