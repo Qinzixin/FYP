@@ -5,7 +5,7 @@ Candidate: Zixin Qin
 
 Type of study: Theoretical Study
 
-#Developer's notes
+# Developer's notes
 
 - Implemented Functionalities
   - **replace_by_edge** done, rather trival (2021.1.6)
@@ -21,6 +21,10 @@ Type of study: Theoretical Study
    -  **sort the edges**, done (2.28)
 - Under implementation 
    - find the replace edge
+      - understand what is "reference","copy" and "deep copy". Reference should be used.(3.1)
+      - what is decorator (@property)?
+      - **edge_elimination** patial implemented
+      - **reveal** to be implemented
    - experiment
 
 

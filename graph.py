@@ -166,6 +166,7 @@ class Graph:
         print(boundary)
         return boundary
 
+
     def get_boundary_vertex(self,boundary):
         bd_nodes = []
         for node in self.verList:
@@ -189,3 +190,21 @@ class Graph:
         print(bd_edges_index)
         return  bd_edges_index
 
+    def edge_elimination(self, edge_list,l, bd_v):
+        def regular(edge_id):
+            edge = self.edgeList[edge_id]
+            arrow = edge.fro
+            incident_vertex = self.replace_by_edge(arrow,edge_id)
+            reveal_edge_1 = self.replace_by_vertex(edge_id,incident_vertex)
+            reveal_vertex = self.replace_by_edge(incident_vertex,reveal_edge_1)
+            if reveal_vertex in bd_v:
+                return False
+            else:
+                return True
+
+        while len(edge_list)!=0 :
+            e = edge_list.pop()
+            if( self.edgeList[e].length>l and regular(e)):
+                print(e)
+            else:
+                print(e," is not regular")
