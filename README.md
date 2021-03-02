@@ -20,13 +20,12 @@ Type of study: Theoretical Study
         - use pointer, ideally not contaning global vairable
    -  **sort the edges**, done (2.28)
    -  **reveal** finished (3.1)
+   - **remove edge** done, the edge must be sorted in "small-big" order (3.2)
+   - **queue** done, the edges need to be stored in queue structure (3.2)
 - Under implementation 
    - find the replace edge
-      - ~~what is "reference","copy" and "deep copy"?~~ Reference should be used.(3.1)
-      - what is decorator (@property)?
-      - **edge_elimination** patial implemented, hard
-          - **remove edge** done, the edge must be sorted in "small-big" order 
-          - **queue**, the edges need to be stored in queue structure
+      - **edge_elimination** **Bug: regular constraint**
+         
    - experiment
 
 # Key dates

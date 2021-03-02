@@ -5,6 +5,8 @@ from vertex import Vertex
 from edge import Edge
 from graph import Graph
 
+from queue import Queue
+
 # 在建图时应该尽量用graph层次提供的api
 
 # vertex location, in x,y form
@@ -87,6 +89,11 @@ if __name__ == "__main__":
     bd_v = s.get_boundary_vertex(bd_e)
     bd_sorted = s.sort_egdes(bd_e)
     print(bd_sorted)
-    s.edge_elimination(bd_sorted,0.0,bd_sorted)
+    q = Queue(maxsize=100)
+
+    for i in bd_sorted:
+        q.put(i)
+
+    s.edge_elimination(q,0.0,bd_sorted)
 
     plt.show()

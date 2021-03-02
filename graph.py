@@ -214,7 +214,7 @@ class Graph:
             print(e.length)
         return bd_edges_index
 
-    def edge_elimination(self, edge_list, l, bd):
+    def edge_elimination(self, edge_queue, l, bd):
         def get_anti_edge(eid):
             return eid + 1;
 
@@ -245,21 +245,21 @@ class Graph:
             else:
                 return True
 
-        while len(edge_list) != 0:
-            e = edge_list.pop()
-            e = edge_list.pop()
+        while not edge_queue.empty():
+            e = edge_queue.get()
+            e2 = edge_queue.get()
             print()
-            if regular(e):
+            if regular(e) and self.edgeList[e].length>l:
                 print(e)
                 dart_1 = e
                 dart_2 = e+1
                 r1 = reveal(dart_1)
-                r2 = reveal(dart_2)
                 vertex_r = self.edgeList[r1].to
+                r2 = self.vertex_repl[r1,vertex_r]
                 self.edgeList.pop(dart_1)
                 self.edgeList.pop(dart_2)
-                edge_list.append(r1)
-                edge_list.append(r2)
+                edge_queue.put(r1)
+                edge_queue.put(r2)
 
             else:
                 print(e)
