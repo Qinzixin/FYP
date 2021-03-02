@@ -86,6 +86,7 @@ if __name__ == "__main__":
     bd_e = s.get_boundary_edges
     bd_v = s.get_boundary_vertex(bd_e)
     bd_sorted = s.sort_egdes(bd_e)
-    s.edge_elimination(bd_e,0.0,bd_sorted)
+    print(bd_sorted)
+    s.edge_elimination(bd_sorted,0.0,bd_sorted)
 
     plt.show()

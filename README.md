@@ -24,9 +24,12 @@ Type of study: Theoretical Study
    - find the replace edge
       - ~~what is "reference","copy" and "deep copy"?~~ Reference should be used.(3.1)
       - what is decorator (@property)?
-      - **edge_elimination** patial implemented
-          - **remove edge** find it hard to do this gracefully.
-          - insert reveal, update vertex's status
+      - **edge_elimination** patial implemented, hard
+          - **remove edge** done, the edge must be sorted in "small-big" order 
+          - **queue**, the edges need to be stored in queue structure
    - experiment
 
+# Key dates
 
+Thesis：6th week (4.x)
+Final: May 10th

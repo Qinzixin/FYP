@@ -3,10 +3,13 @@ import math
 import copy
 
 
+import functools
+
+
 class Graph:
     def __init__(self):
-        self.verList = {} # v-id -> vertex object
-        self.edgeList = {} # e-id -> edge object
+        self.verList = {}  # v-id -> vertex object
+        self.edgeList = {}  # e-id -> edge object
         self.numVertices = 0
         self.numEdges = 0
         self.edge_repl = {}
@@ -16,17 +19,20 @@ class Graph:
     def get_edge_set(self):
         return self.edgeList
 
-#调用的 edgeList
-    def replace_by_edge(self,v_id,e_id):
+    # 调用的 edgeList
+    def replace_by_edge(self, v_id, e_id):
         def generate_rpl_edge():
-            for edge in self.edgeList.values(): # edge is the object
-                self.edge_repl[edge.fro,edge.id] = edge.to
-        generate_rpl_edge() # the dictionary for all edge's linkage relationship
-        return self.edge_repl.get((v_id,e_id),"None")
-#图变化后需要重新生成
-    def the_clockwise_edge(self,e_id, transition_id):
+            for edge in self.edgeList.values():  # edge is the object
+                self.edge_repl[edge.fro, edge.id] = edge.to
+
+        generate_rpl_edge()  # the dictionary for all edge's linkage relationship
+        return self.edge_repl.get((v_id, e_id), "None")
+
+    # 图变化后需要重新生成
+    def the_clockwise_edge(self, e_id, transition_id):
         def get_angle(edge):
             return edge.angle
+
         begin_edge = self.edgeList[e_id]
         # print("\nstarting edge ", e_id)
         trans_vertex = self.verList.get(transition_id)
@@ -39,7 +45,7 @@ class Graph:
             if list[j].to == self.edgeList[e_id].fro:
                 list.pop(j)
                 break
-            elif (len(list)== cardinality):
+            elif (len(list) == cardinality):
                 j += 1
 
         for edge in list:
@@ -47,23 +53,23 @@ class Graph:
             vec1_y = self.verList[begin_edge.fro].y - self.verList[begin_edge.to].y
             vec2_x = self.verList[edge.to].x - self.verList[edge.fro].x
             vec2_y = self.verList[edge.to].y - self.verList[edge.fro].y
-            dot = vec1_x * vec2_y - vec2_x* vec1_y
-            modulus_1 = math.sqrt(math.pow(vec1_x,2) + math.pow(vec1_y,2))
+            dot = vec1_x * vec2_y - vec2_x * vec1_y
+            modulus_1 = math.sqrt(math.pow(vec1_x, 2) + math.pow(vec1_y, 2))
             modulus_2 = math.sqrt(math.pow(vec2_x, 2) + math.pow(vec2_y, 2))
             inner = (vec1_x * vec2_x + vec1_y * vec2_y)
             result = inner / (modulus_1 * modulus_2)
 
             if dot > 0:
-                cos_theta = result # big bug!!! avoid using arc cos!!!
-            else :
+                cos_theta = result  # big bug!!! avoid using arc cos!!!
+            else:
                 cos_theta = -2 - result
 
             # print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
             edge.angle = cos_theta
-        sorted_edges = sorted(list, key = get_angle)
-        #for edge in sorted_edges:
-            #print("angle = %s" % edge.angle)
-            #print(self.verList[edge.fro].x,self.verList[edge.fro].y,self.verList[edge.to].x,self.verList[edge.to].y)
+        sorted_edges = sorted(list, key=get_angle)
+        # for edge in sorted_edges:
+        # print("angle = %s" % edge.angle)
+        # print(self.verList[edge.fro].x,self.verList[edge.fro].y,self.verList[edge.to].x,self.verList[edge.to].y)
 
         if sorted_edges and trans_vertex:
             next_edge = sorted_edges[0]
@@ -72,14 +78,16 @@ class Graph:
             return next_edge.id
         else:
             return None
-#图变化后需要重新生成
-    def replace_by_vertex(self,e_id,transition_id):
+
+    # 图变化后需要重新生成
+    def replace_by_vertex(self, e_id, transition_id):
         def generate_rpl_vertex():
             for edge in self.edgeList.values():
-                vertex = edge.to # vertex is an id
-                self.vertex_repl[edge.id,vertex] = self.the_clockwise_edge(edge.id,vertex) #连接的最近的边的id
+                vertex = edge.to  # vertex is an id
+                self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+
         generate_rpl_vertex()
-        return self.vertex_repl.get((e_id,transition_id),"None")
+        return self.vertex_repl.get((e_id, transition_id), "None")
 
     def get_vertex_set(self):
         return self.verList
@@ -90,9 +98,9 @@ class Graph:
     def get_numEdge(self):
         return self.numEdges
 
-    def addVertex(self, key,x,y):
+    def addVertex(self, key, x, y):
         self.numVertices = self.numVertices + 1
-        newVertex = Vertex(key,x,y)
+        newVertex = Vertex(key, x, y)
         self.verList[key] = newVertex
         return newVertex
 
@@ -122,7 +130,7 @@ class Graph:
         f = edge.fro
         t = edge.to
         cost = edge.weight
-        #检查顶点的序号是否合法
+        # 检查顶点的序号是否合法
         if f not in self.verList:
             nv = self.addVertex(f)
         if t not in self.verList:
@@ -135,38 +143,40 @@ class Graph:
             self.verList[f].addConnection(edge)
             # update edge set for a vertex
 
-            self.numEdges = self.numEdges +1
+            self.numEdges = self.numEdges + 1
             # new_edge = Edge(self.numEdges,cost, f, t)
 
-            self.edge_repl[f,edge.id] = t
+            self.edge_repl[f, edge.id] = t
 
-            self.edgeList[edge.id]= edge
+            self.edgeList[edge.id] = edge
+
+    def get_anti_edge(self,eid):
+        return eid + 1;
 
     @property
     def get_boundary_edges(self):
-        boundary=[]
+        boundary = []
         arrow_cnt = self.numEdges;
-        def get_anti_edge(eid):
-            return eid + 1;
+
         def three_edge_trial(e):
-            t1 = self.replace_by_vertex(e,self.edgeList[e].to)
+            t1 = self.replace_by_vertex(e, self.edgeList[e].to)
             t2 = self.replace_by_vertex(t1, self.edgeList[t1].to)
             t3 = self.replace_by_vertex(t2, self.edgeList[t2].to)
             print(e)
-            print(e==t3)
+            print(e == t3)
             if e == t3:
-                return True # this is a inner edge candidate
+                return True  # this is a inner edge candidate
             return False
-        for k in range(0,arrow_cnt,2):
-            anti_k = get_anti_edge(k)
-            if not (three_edge_trial(k)  and three_edge_trial(anti_k)):
+
+        for k in range(0, arrow_cnt, 2):
+            anti_k = self.get_anti_edge(k)
+            if not (three_edge_trial(k) and three_edge_trial(anti_k)):
                 boundary.append(k)
                 boundary.append(anti_k)
         print(boundary)
         return boundary
 
-
-    def get_boundary_vertex(self,boundary):
+    def get_boundary_vertex(self, boundary):
         bd_nodes = []
         for node in self.verList:
             self.verList[node].bd = False
@@ -176,49 +186,81 @@ class Graph:
                     bd_nodes.append(node)
                     break
         print(bd_nodes)
-        return  bd_nodes
+        return bd_nodes
 
-    def sort_egdes(self,edge_list):
+
+    def sort_egdes(self, edge_list):
+        def cmp(x, y):
+            if x.length == y.length:
+                if x.id < y.id:
+                    return -1
+                else:
+                    return 1
+            else:
+                if x.length < y.length:
+                    return -1
+                else:
+                    return 1
         bd_edges = []
         for edge_id in edge_list:
             bd_edges.append(self.edgeList[edge_id])
-        bd_edges.sort(key=lambda x:x.length)
+        bd_edges = sorted(bd_edges, key=functools.cmp_to_key(cmp))
         bd_edges_index = []
         for edge in bd_edges:
             bd_edges_index.append(edge.id)
-        print(bd_edges_index)
-        return  bd_edges_index
 
-    def edge_elimination(self, edge_list,l, bd):
+        print(bd_edges_index)
+        for e in bd_edges:
+            print(e.length)
+        return bd_edges_index
+
+    def edge_elimination(self, edge_list, l, bd):
         def get_anti_edge(eid):
             return eid + 1;
 
-        def regular(edge_id):
+        def reveal(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
             reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro)
 
-            reveal_edge_1 = self.replace_by_vertex(edge_id,edge.to)
-            inner_vertex = self.replace_by_edge(edge.to,reveal_edge_1)
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1)
 
-            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1,inner_vertex)
-            out_vertex = self.replace_by_edge(inner_vertex,reveal_edge_2)
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2)
 
-            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2,out_vertex)
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex)
 
             if reveal_edge_3 == edge_id:
                 reveal = reveal_edge_1
             else:
                 reveal = reveal_edge_0
-            if reveal in bd:
+
+            return reveal
+
+        def regular(edge_id):
+            r = reveal(edge_id)
+            if r in bd:
                 return False
             else:
                 return True
 
-        while len(edge_list)!=0 :
+        while len(edge_list) != 0:
             e = edge_list.pop()
+            e = edge_list.pop()
+            print()
             if regular(e):
-                # self.edgeList[e].length>l
                 print(e)
+                dart_1 = e
+                dart_2 = e+1
+                r1 = reveal(dart_1)
+                r2 = reveal(dart_2)
+                vertex_r = self.edgeList[r1].to
+                self.edgeList.pop(dart_1)
+                self.edgeList.pop(dart_2)
+                edge_list.append(r1)
+                edge_list.append(r2)
+
             else:
-                print(e," is not regular")
+                print(e)
+                print(" is not regular")
