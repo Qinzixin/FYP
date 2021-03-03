@@ -22,10 +22,8 @@ Type of study: Theoretical Study
   - **edge_elimination** 
     -  basically able to run over input graph(3.3)
     - **However, there is a bug: regular constraint**, it eliminate more edges than expected
-         
    - experiment
 
 # Key dates
-
 Showcase：6th week (4.x)
 Final: May 10th

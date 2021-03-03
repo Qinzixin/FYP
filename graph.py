@@ -198,9 +198,9 @@ class Graph:
                     return 1
             else:
                 if x.length < y.length:
-                    return -1
-                else:
                     return 1
+                else:
+                    return -1
         bd_edges = []
         for edge_id in edge_list:
             bd_edges.append(self.edgeList[edge_id])
@@ -247,7 +247,21 @@ class Graph:
             reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to)
             inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1)
 
-            return inner_vertex
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2)
+
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex)
+
+            if reveal_edge_3 == edge_id:
+                #reveal = reveal_edge_1
+                vertex = inner_vertex
+            else:
+                #reveal = reveal_edge_0
+                anti_edge = self.edgeList[edge_id + 1]
+                r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to)
+                r2 = self.edgeList[r2_id]
+                vertex = r2.to
+            return vertex
 
 
         def regular(edge_id):
@@ -268,6 +282,7 @@ class Graph:
                 dart_2 = e+1
                 r1 = reveal(dart_1)
                 vertex_r = self.edgeList[r1].to
+                self.verList[vertex_r].bd = True
                 r2 = self.vertex_repl[r1,vertex_r]
                 self.edgeList.pop(dart_1)
                 self.edgeList.pop(dart_2)

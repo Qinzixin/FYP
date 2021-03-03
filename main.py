@@ -11,10 +11,11 @@ from queue import Queue
 
 # vertex location, in x,y form
 map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
+# map is okay
 
 # edge : start node, end node and length
 matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
-
+# to be generated
 
 def buildGraph(vertices,edges):
     graph = Graph()
@@ -29,6 +30,8 @@ def buildGraph(vertices,edges):
         # vid -> v object
         # the vertex dictionary adopts a key(id) and add a vertex object to the graph's vertex list
     e = 0
+
+
     for edge in edges:
         for i in range(2):
             '''
@@ -71,15 +74,16 @@ if __name__ == "__main__":
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=1.5)
 
 
-    '''initial plt
-        for edge in s.edgeList.values():
+    #initial plt
+    '''
+    for edge in s.edgeList.values():
         v1 = s.getVertex(edge.fro)
         v2 = s.getVertex(edge.to)
         x1, x2 = v1.x, v2.x
         y1, y2 = v1.y, v2.y
         #print(x1,x2,y1,y2)
         plt.plot([x1,x2],[y1,y2])
-    '''
+'''
     # map an edge to its next edge
     mv1 = s.replace_by_edge(3,8)
     #print("is mapped to " + "% s" % mv1 )
