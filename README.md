@@ -27,5 +27,5 @@ Type of study: Theoretical Study
 
 # Key dates
 
-Thesis：6th week (4.x)
+Showcase：6th week (4.x)
 Final: May 10th
