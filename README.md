@@ -18,11 +18,12 @@ Type of study: Theoretical Study
    -  **reveal** finished (3.1)
    - **remove edge** done, the edge must be sorted in "small-big" order (3.2)
    - **queue** done, the edges need to be stored in queue structure (3.2)
-- Under implementation 
-  - **edge_elimination** 
+    - **edge_elimination** 
     -  basically able to run over input graph(3.3)
-    - **However, there is a bug: regular constraint**, it eliminate more edges than expected
-   - experiment
+    - However, there may be a bug: regular constraint, it  may eliminate more edges than expected(3.3)
+- Under implementation 
+   - **input edges and conduct experiment**
+        - to input the edge in DT
 
 # Key dates
 Showcase：6th week (4.x)
