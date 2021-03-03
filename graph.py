@@ -218,6 +218,7 @@ class Graph:
         def get_anti_edge(eid):
             return eid + 1;
 
+       # return the reveal point
         def reveal(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
@@ -238,12 +239,24 @@ class Graph:
 
             return reveal
 
+        def reveal2(edge_id):
+            reveal = -1
+            edge = self.edgeList[edge_id]
+            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro)
+
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1)
+
+            return inner_vertex
+
+
         def regular(edge_id):
-            r = reveal(edge_id)
-            if r in bd:
-                return False
-            else:
+            v = reveal2(edge_id)
+            vertex = self.verList[v]
+            if vertex.bd == False:
                 return True
+            else:
+                return False
 
         while not edge_queue.empty():
             e = edge_queue.get()

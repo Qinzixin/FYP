@@ -69,14 +69,17 @@ if __name__ == "__main__":
     #s.print()
     points = np.array(map)
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=1.5)
-    for edge in s.edgeList.values():
+
+
+    '''initial plt
+        for edge in s.edgeList.values():
         v1 = s.getVertex(edge.fro)
         v2 = s.getVertex(edge.to)
         x1, x2 = v1.x, v2.x
         y1, y2 = v1.y, v2.y
         #print(x1,x2,y1,y2)
         plt.plot([x1,x2],[y1,y2])
-
+    '''
     # map an edge to its next edge
     mv1 = s.replace_by_edge(3,8)
     #print("is mapped to " + "% s" % mv1 )
@@ -95,5 +98,13 @@ if __name__ == "__main__":
         q.put(i)
 
     s.edge_elimination(q,0.0,bd_sorted)
+
+    for edge in s.edgeList.values():
+        v1 = s.getVertex(edge.fro)
+        v2 = s.getVertex(edge.to)
+        x1, x2 = v1.x, v2.x
+        y1, y2 = v1.y, v2.y
+        #print(x1,x2,y1,y2)
+        plt.plot([x1,x2],[y1,y2])
 
     plt.show()

@@ -10,21 +10,18 @@ Type of study: Theoretical Study
 - Implemented Functionalities
   - **replace_by_edge** done, rather trival (2021.1.6)
   - **replace_by_vertex** done, quite hard (2.9), design a test case manually
-  - **get_boundary_edges** done,determine whether the edge is exterior
-     
-     - ~~heart attack, the three transition formula does not work on test case~~
-     
-     - problem solved: the formula only works when the graph is triangulated. (2.27)
+  - **get_boundary_edges** done,determine whether the edge is exterior 
+        - problem solved: the formula only works when the graph is triangulated. (2.27)
    -  **generate the "ext point set"**, done (2.28)
-       -  ~~leaving one potential bug: the boundary could not be stored as global variable (better to use pointer or global variable?)~~
         - use pointer, ideally not contaning global vairable
    -  **sort the edges**, done (2.28)
    -  **reveal** finished (3.1)
    - **remove edge** done, the edge must be sorted in "small-big" order (3.2)
    - **queue** done, the edges need to be stored in queue structure (3.2)
 - Under implementation 
-   - find the replace edge
-      - **edge_elimination** **Bug: regular constraint**
+  - **edge_elimination** 
+    -  basically able to run over input graph(3.3)
+    - **However, there is a bug: regular constraint**, it eliminate more edges than expected
          
    - experiment
 
