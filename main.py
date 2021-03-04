@@ -7,14 +7,57 @@ from graph import Graph
 
 from queue import Queue
 
+from scipy.spatial import Delaunay
+import numpy as np
+
 # 在建图时应该尽量用graph层次提供的api
+points_i = np.array([[-1.551216,53.809794]])
+
+def read_points_data():
+    global points_i
+    node_data = open('node.data', 'r')
+    for line in node_data:
+        records = line.split()
+        x = float(records[0])
+        y = float(records[1])
+        points_i = np.append(points_i, [[x, y]], axis=0)
+    node_data.close()
+
+def triangulate():
+    points = points_i
+    tri = Delaunay(points)
+    #print(tri)
+    edges = []
+    for relation in tri.simplices:
+        if not [relation[0],relation[1]] in edges:
+            edges.append([relation[0],relation[1]])
+        if not [relation[1], relation[2]] in edges:
+            edges.append([relation[1],relation[2]])
+    #print(edges)
+    edges_match = np.array(edges)
+    fro = points[edges_match[:,0]]
+    to = points[edges_match[:,1]]
+
+    for i in range(len(fro)):
+        x = [fro[i][0], to[i][0]]
+        y = [fro[i][1], to[i][1]]
+        plt.plot(x,y,color='g')
+
+    #.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
+    #plt.show()
+    return edges
 
 # vertex location, in x,y form
-map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
+# map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
 # map is okay
+read_points_data()
+edges = triangulate()
+map = points_i.tolist()
 
 # edge : start node, end node and length
-matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
+matrix = edges
+print(matrix[0])
+#matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
 # to be generated
 
 def buildGraph(vertices,edges):
@@ -37,7 +80,7 @@ def buildGraph(vertices,edges):
             '''
             deal with vertex
             '''
-            weight = edge[2]
+            #weight = edge[2]
             if i == 0:
                 fro,to = edge[0],edge[1]
             else:
@@ -54,11 +97,12 @@ def buildGraph(vertices,edges):
             gradient = (start_vertex.y - end_vertex.y)/(start_vertex.x - end_vertex.x)
             # compute the edge's length
             length = (1.0 + pow(gradient,2))*abs(start_vertex.x - end_vertex.x)
+            print(length)
             '''
               construct edges
             '''
             # generate a edge object
-            new_edge = Edge(e,weight, fro, to, gradient,length)
+            new_edge = Edge(e, fro, to, gradient,length)
             # append to edge list: id -> edge object
             graph.addEdge(new_edge)
             e= e+1

@@ -23,7 +23,7 @@ Type of study: Theoretical Study
     - However, there may be a bug: regular constraint, it  may eliminate more edges than expected(3.3)
 - Under implementation 
    - **input edges and conduct experiment**
-        - to input the edge in DT
+        - basically ok, leaving small bugs to fix
 
 # Key dates
 Showcase：6th week (4.x)

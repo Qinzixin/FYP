@@ -129,7 +129,7 @@ class Graph:
         id = edge.id
         f = edge.fro
         t = edge.to
-        cost = edge.weight
+        cost = edge.length
         # 检查顶点的序号是否合法
         if f not in self.verList:
             nv = self.addVertex(f)
