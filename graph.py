@@ -20,12 +20,12 @@ class Graph:
         return self.edgeList
 
     # 调用的 edgeList
-    def replace_by_edge(self, v_id, e_id):
+    def replace_by_edge(self, v_id, e_id,change):
         def generate_rpl_edge():
             for edge in self.edgeList.values():  # edge is the object
                 self.edge_repl[edge.fro, edge.id] = edge.to
-
-        generate_rpl_edge()  # the dictionary for all edge's linkage relationship
+        if change == True:
+            generate_rpl_edge()  # the dictionary for all edge's linkage relationship
         return self.edge_repl.get((v_id, e_id), "None")
 
     # 图变化后需要重新生成
@@ -56,14 +56,16 @@ class Graph:
             dot = vec1_x * vec2_y - vec2_x * vec1_y
             modulus_1 = math.sqrt(math.pow(vec1_x, 2) + math.pow(vec1_y, 2))
             modulus_2 = math.sqrt(math.pow(vec2_x, 2) + math.pow(vec2_y, 2))
-            inner = (vec1_x * vec2_x + vec1_y * vec2_y)
-            result = inner / (modulus_1 * modulus_2)
+            if not modulus_1*modulus_2==0:
+                inner = (vec1_x * vec2_x + vec1_y * vec2_y)
+                result = inner / (modulus_1 * modulus_2)
 
-            if dot > 0:
-                cos_theta = result  # big bug!!! avoid using arc cos!!!
+                if dot > 0:
+                    cos_theta = result  # big bug!!! avoid using arc cos!!!
+                else:
+                    cos_theta = -2 - result
             else:
-                cos_theta = -2 - result
-
+                cos_theta = -5
             # print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
             edge.angle = cos_theta
         sorted_edges = sorted(list, key=get_angle)
@@ -80,13 +82,14 @@ class Graph:
             return None
 
     # 图变化后需要重新生成
-    def replace_by_vertex(self, e_id, transition_id):
+    def replace_by_vertex(self, e_id, transition_id, change):
         def generate_rpl_vertex():
             for edge in self.edgeList.values():
                 vertex = edge.to  # vertex is an id
                 self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
 
-        generate_rpl_vertex()
+        if change == True:
+            generate_rpl_vertex()
         return self.vertex_repl.get((e_id, transition_id), "None")
 
     def get_vertex_set(self):
@@ -158,10 +161,14 @@ class Graph:
         boundary = []
         arrow_cnt = self.numEdges;
 
+        for edge in self.edgeList.values():
+            vertex = edge.to  # vertex is an id
+            self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+
         def three_edge_trial(e):
-            t1 = self.replace_by_vertex(e, self.edgeList[e].to)
-            t2 = self.replace_by_vertex(t1, self.edgeList[t1].to)
-            t3 = self.replace_by_vertex(t2, self.edgeList[t2].to)
+            t1 = self.replace_by_vertex(e, self.edgeList[e].to,False)
+            t2 = self.replace_by_vertex(t1, self.edgeList[t1].to,False)
+            t3 = self.replace_by_vertex(t2, self.edgeList[t2].to,False)
             print(e)
             print(e == t3)
             if e == t3:
@@ -222,15 +229,15 @@ class Graph:
         def reveal(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
-            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro)
+            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,True)
 
-            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to)
-            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1)
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,True)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,True)
 
-            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex)
-            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2)
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,True)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,True)
 
-            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex)
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,True)
 
             if reveal_edge_3 == edge_id:
                 reveal = reveal_edge_1
@@ -242,15 +249,15 @@ class Graph:
         def reveal2(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
-            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro)
+            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,True)
 
-            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to)
-            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1)
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,True)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,True)
 
-            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex)
-            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2)
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,True)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,True)
 
-            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex)
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,True)
 
             if reveal_edge_3 == edge_id:
                 #reveal = reveal_edge_1
@@ -258,7 +265,7 @@ class Graph:
             else:
                 #reveal = reveal_edge_0
                 anti_edge = self.edgeList[edge_id + 1]
-                r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to)
+                r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to,True)
                 r2 = self.edgeList[r2_id]
                 vertex = r2.to
             return vertex
@@ -273,6 +280,7 @@ class Graph:
                 return False
 
         while not edge_queue.empty():
+            print(edge_queue.qsize())
             e = edge_queue.get()
             e2 = edge_queue.get()
             print()

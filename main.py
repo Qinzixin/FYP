@@ -11,11 +11,11 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[-1.551216,53.809794]])
+points_i = np.array([[-1.562377,53.807817]])
 
 def read_points_data():
     global points_i
-    node_data = open('node.data', 'r')
+    node_data = open('node2.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
@@ -29,9 +29,9 @@ def triangulate():
     #print(tri)
     edges = []
     for relation in tri.simplices:
-        if not [relation[0],relation[1]] in edges:
+        if not ([relation[0],relation[1]] in edges or [relation[1],relation[0]] in edges ):
             edges.append([relation[0],relation[1]])
-        if not [relation[1], relation[2]] in edges:
+        if not ([relation[1], relation[2]] in edges or [relation[2], relation[1]] in edges ):
             edges.append([relation[1],relation[2]])
     #print(edges)
     edges_match = np.array(edges)
@@ -43,8 +43,8 @@ def triangulate():
         y = [fro[i][1], to[i][1]]
         plt.plot(x,y,color='g')
 
-    #.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
-    #plt.show()
+    plt.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
+    plt.show()
     return edges
 
 # vertex location, in x,y form
@@ -64,11 +64,11 @@ def buildGraph(vertices,edges):
     graph = Graph()
     i = 0
     for vertex in vertices:
-        i = i+1 # the key that uniquely identifies the vertex
         x = vertex[0] # the x coordinate of the vertex
         y = vertex[1] # the y coordinate
         v = Vertex(i,x,y)
         graph.addVertex(i,x,y)
+        i = i+1 # the key that uniquely identifies the vertex
         # new a vertex, write to graph's vertex list (which is a dictionary)
         # vid -> v object
         # the vertex dictionary adopts a key(id) and add a vertex object to the graph's vertex list
@@ -94,10 +94,14 @@ def buildGraph(vertices,edges):
             start_vertex = graph.verList[fro]
             end_vertex = graph.verList[to]
             # compute the edge's gradient
-            gradient = (start_vertex.y - end_vertex.y)/(start_vertex.x - end_vertex.x)
             # compute the edge's length
-            length = (1.0 + pow(gradient,2))*abs(start_vertex.x - end_vertex.x)
-            print(length)
+            if not (math.isclose(start_vertex.x , end_vertex.x, rel_tol=1e-9)):
+                gradient = (start_vertex.y - end_vertex.y)/(start_vertex.x - end_vertex.x)
+                length = (1.0 + pow(gradient, 2)) * abs(start_vertex.x - end_vertex.x)
+            else:
+                gradient = float('inf')
+                length  = abs(start_vertex.y - end_vertex.y)
+            #print(length)
             '''
               construct edges
             '''
@@ -128,31 +132,26 @@ if __name__ == "__main__":
         #print(x1,x2,y1,y2)
         plt.plot([x1,x2],[y1,y2])
 '''
-    # map an edge to its next edge
-    mv1 = s.replace_by_edge(3,8)
-    #print("is mapped to " + "% s" % mv1 )
-
-    mv = s.replace_by_vertex(8,5)
-    #print("is mapped to " + "% s" % mv )
-    #s.get_edge_set()
-
     bd_e = s.get_boundary_edges
     bd_v = s.get_boundary_vertex(bd_e)
     bd_sorted = s.sort_egdes(bd_e)
     print(bd_sorted)
-    q = Queue(maxsize=100)
+    print("bd sorted")
+    q = Queue(maxsize=250000)
 
     for i in bd_sorted:
         q.put(i)
 
+    print("Start Elimination")
     s.edge_elimination(q,0.0,bd_sorted)
 
+    print("End of elimination")
     for edge in s.edgeList.values():
         v1 = s.getVertex(edge.fro)
         v2 = s.getVertex(edge.to)
         x1, x2 = v1.x, v2.x
         y1, y2 = v1.y, v2.y
-        #print(x1,x2,y1,y2)
-        plt.plot([x1,x2],[y1,y2])
+        print(x1,x2,y1,y2)
+        plt.plot([x1,x2],[y1,y2],color='coral')
 
     plt.show()
