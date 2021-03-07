@@ -15,7 +15,7 @@ points_i = np.array([[-1.562377,53.807817]])
 
 def read_points_data():
     global points_i
-    node_data = open('node2.data', 'r')
+    node_data = open('node.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
@@ -26,13 +26,16 @@ def read_points_data():
 def triangulate():
     points = points_i
     tri = Delaunay(points)
-    #print(tri)
+    for s in tri.simplices:
+        print(s)
     edges = []
     for relation in tri.simplices:
         if not ([relation[0],relation[1]] in edges or [relation[1],relation[0]] in edges ):
             edges.append([relation[0],relation[1]])
         if not ([relation[1], relation[2]] in edges or [relation[2], relation[1]] in edges ):
             edges.append([relation[1],relation[2]])
+        if not ([relation[2], relation[0]] in edges or [relation[0], relation[2]] in edges ):
+            edges.append([relation[0],relation[2]])
     #print(edges)
     edges_match = np.array(edges)
     fro = points[edges_match[:,0]]

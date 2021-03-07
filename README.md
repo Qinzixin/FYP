@@ -20,10 +20,14 @@ Type of study: Theoretical Study
    - **queue** done, the edges need to be stored in queue structure (3.2)
     - **edge_elimination** 
     -  basically able to run over input graph(3.3)
-    - However, there may be a bug: regular constraint, it  may eliminate more edges than expected(3.3)
+    - ~~However, there may be a bug: regular constraint, it  may eliminate more edges than expected~~(3.3) bug fixed(3.4)
 - Under implementation 
-   - **input edges and conduct experiment**
-        - basically ok, leaving small bugs to fix
+   - **debug and conduct experiment**
+      - ~~single vertex problem~~ solved(3.5)
+      - the edge elimination only works for a single round (3.7) 
+         ![avatar](/image/1.png) ![avatar](/image/2.png)
+         - debug method: need to design specific sample input to debug
+         - print out the triangulation simplices
 
 # Key dates
 Showcase：6th week (4.x)
