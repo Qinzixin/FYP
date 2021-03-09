@@ -11,11 +11,11 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[-1.562377,53.807817]])
+points_i = np.array([[1,1]])
 
 def read_points_data():
     global points_i
-    node_data = open('node.data', 'r')
+    node_data = open('data/design1.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])

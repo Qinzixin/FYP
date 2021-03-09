@@ -25,7 +25,8 @@ Type of study: Theoretical Study
    - **debug and conduct experiment**
       - ~~single vertex problem~~ solved(3.5)
       - the edge elimination only works for a single round (3.7) 
-         ![avatar](/image/1.png) ![avatar](/image/2.png)
+         ![avatar](/image/1.png) 
+         ![avatar](/image/2.png)
          - debug method: need to design specific sample input to debug
          - print out the triangulation simplices
 
