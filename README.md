@@ -23,13 +23,13 @@ Type of study: Theoretical Study
    -  **reveal** finished (3.1)
    - **remove edge** done, the edge must be sorted in "small-big" order (3.2)
    - **queue** done, the edges need to be stored in queue structure (3.2)
-    - **edge_elimination** 
-    -  basically able to run over input graph(3.3)
-    - ~~However, there may be a bug: regular constraint, it  may eliminate more edges than expected~~(3.3) bug fixed(3.4)
-    - ~~single vertex problem~~ solved(3.5)
-    - the edge elimination only works for a single round (3.7) 
-       - debug method: need to design specific sample input to debug (3.9 completed)
-    - **anti_edge** function improved(3.10)
+   - **edge_elimination** 
+        -  basically able to run over input graph(3.3)
+        - ~~However, there may be a bug: regular constraint, it  may eliminate more edges than expected~~(3.3) bug fixed(3.4)
+        - ~~single vertex problem~~ solved(3.5)
+        - the edge elimination only works for a single round (3.7) 
+           - debug method: need to design specific sample input to debug (3.9 completed)
+   - **anti_edge** function improved(3.10)
 - Under implementation 
    - ** design experiment features**
      - record data size, running time, analyze efficiency
