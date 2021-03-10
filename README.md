@@ -1,8 +1,10 @@
 # FYP
 This is the Final Year Project code repository for the project **shape approximation**.
 
-The aim of this work is to review, implement and benchmark algorithms for generating
-polygons which characterizes the shape of a set of points.
+The shape approxiamation problem has wide application in the field of geography, spatial data mining and computing geometry.
+The aim of this project is to review, implement and benchmark algorithms for generating
+polygons which characterizes the shape of a set of points. This repository provides my implementation
+for the chi algorithm.
 
 Candidate: Zixin Qin
 
@@ -36,9 +38,6 @@ Type of study: Theoretical Study
         - Shape set
         - Geography set
    - ** conduct experiment**
-      
-
-         - print out the triangulation simplices (To be done)
 
 # Key dates
 Showcase：6th week (4.x)
