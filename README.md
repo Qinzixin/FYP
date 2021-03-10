@@ -1,6 +1,9 @@
 # FYP
 This is the Final Year Project code repository for the project **shape approximation**.
 
+The aim of this work is to review, implement and benchmark algorithms for generating
+polygons which characterizes the shape of a set of points.
+
 Candidate: Zixin Qin
 
 Type of study: Theoretical Study
