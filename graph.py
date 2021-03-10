@@ -170,8 +170,8 @@ class Graph:
             t1 = self.replace_by_vertex(e, self.edgeList[e].to,False)
             t2 = self.replace_by_vertex(t1, self.edgeList[t1].to,False)
             t3 = self.replace_by_vertex(t2, self.edgeList[t2].to,False)
-            print(e)
-            print(e == t3)
+            #print(e)
+            #print(e == t3)
             if e == t3:
                 return True  # this is a inner edge candidate
             return False
@@ -181,6 +181,9 @@ class Graph:
             if not (three_edge_trial(k) and three_edge_trial(anti_k)):
                 boundary.append(k)
                 boundary.append(anti_k)
+                self.edgeList[k].is_boundary = True
+                self.edgeList[anti_k].is_boundary = True
+
         print(boundary)
         return boundary
 
@@ -193,7 +196,6 @@ class Graph:
                     self.verList[node].bd = True
                     bd_nodes.append(node)
                     break
-        print(bd_nodes)
         return bd_nodes
 
 
@@ -216,10 +218,6 @@ class Graph:
         bd_edges_index = []
         for edge in bd_edges:
             bd_edges_index.append(edge.id)
-
-        print(bd_edges_index)
-        for e in bd_edges:
-            print(e.length)
         return bd_edges_index
 
     def edge_elimination(self, edge_queue, l, bd):
@@ -281,19 +279,20 @@ class Graph:
             else:
                 return False
 
+        print("Remain elements in queue:", end=' ')
         while not edge_queue.empty():
-            print(edge_queue.qsize())
+            print(edge_queue.qsize(),end='')
             e = edge_queue.get()
             e2 = edge_queue.get()
-            print()
             if regular(e) and self.edgeList[e].length>l:
-                print(e)
                 dart_1 = e
                 dart_2 = self.edgeList[e].anti
                 r1 = reveal(dart_1)
+                self.edgeList[r1].is_boundary = True
                 vertex_r = self.edgeList[r1].to
                 self.verList[vertex_r].bd = True
                 r2 = self.vertex_repl[r1,vertex_r]
+                self.edgeList[r2].is_boundary = True
                 # remove edge from vertex's incident edges
                 start = self.edgeList[dart_1].fro
                 to = self.edgeList[dart_1].to
@@ -303,15 +302,11 @@ class Graph:
                 anti_e_id = self.edgeList[e].anti
                 v_to.edges.remove(self.edgeList[anti_e_id])
                 # remove edge from queue and delete the edge from the graph
-                print(len(self.edgeList))
                 self.edgeList.pop(dart_1)
                 self.edgeList.pop(dart_2)
-                print(len(self.edgeList))
                 # add reveal edge to the list
                 edge_queue.put(r1)
                 edge_queue.put(self.edgeList[r1].anti)
                 edge_queue.put(r2)
                 edge_queue.put(self.edgeList[r2].anti)
-            else:
-                print(e)
-                print(" is not regular")
+

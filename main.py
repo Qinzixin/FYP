@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import time
 from vertex import Vertex
 from edge import Edge
 from graph import Graph
@@ -11,7 +12,7 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[-1.564000,53.802913]])
+points_i = np.array([[-1.562377,53.807817]])
 
 def read_points_data():
     global points_i
@@ -26,8 +27,6 @@ def read_points_data():
 def triangulate():
     points = points_i
     tri = Delaunay(points)
-    for s in tri.simplices:
-        print(s)
     edges = []
     for relation in tri.simplices:
         if not ([relation[0],relation[1]] in edges or [relation[1],relation[0]] in edges ):
@@ -36,7 +35,6 @@ def triangulate():
             edges.append([relation[1],relation[2]])
         if not ([relation[2], relation[0]] in edges or [relation[0], relation[2]] in edges ):
             edges.append([relation[0],relation[2]])
-    #print(edges)
     edges_match = np.array(edges)
     fro = points[edges_match[:,0]]
     to = points[edges_match[:,1]]
@@ -46,6 +44,7 @@ def triangulate():
         y = [fro[i][1], to[i][1]]
         plt.plot(x,y,color='g')
 
+    plt.figure(figsize=(10, 10))
     plt.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
 
     plt.grid()
@@ -61,7 +60,6 @@ map = points_i.tolist()
 
 # edge : start node, end node and length
 matrix = edges
-print(matrix[0])
 #matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
 # to be generated
 
@@ -77,6 +75,7 @@ def buildGraph(vertices,edges):
         # new a vertex, write to graph's vertex list (which is a dictionary)
         # vid -> v object
         # the vertex dictionary adopts a key(id) and add a vertex object to the graph's vertex list
+    print("The graph contains",i,"points")
     e = 0
 
 
@@ -106,7 +105,6 @@ def buildGraph(vertices,edges):
             else:
                 gradient = float('inf')
                 length  = abs(start_vertex.y - end_vertex.y)
-            #print(length)
             '''
               construct edges
             '''
@@ -119,48 +117,41 @@ def buildGraph(vertices,edges):
             # append to edge list: id -> edge object
             graph.addEdge(new_edge)
             e= e+1
+    print("The graph contains", e,"edges")
     return graph
 
 
 if __name__ == "__main__":
     # map is the set of vertex coordinate
     # matrix is the edge relation
+    print("The algorithm starts")
+    start_time =  time.time()
     s = buildGraph(map,matrix)
-    #s.print()
+    print("The graph has been built. ")
     points = np.array(map)
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=1.5)
-
-
-    #initial plt
-    '''
-    for edge in s.edgeList.values():
-        v1 = s.getVertex(edge.fro)
-        v2 = s.getVertex(edge.to)
-        x1, x2 = v1.x, v2.x
-        y1, y2 = v1.y, v2.y
-        #print(x1,x2,y1,y2)
-        plt.plot([x1,x2],[y1,y2])
-'''
     bd_e = s.get_boundary_edges
     bd_v = s.get_boundary_vertex(bd_e)
     bd_sorted = s.sort_egdes(bd_e)
-    print(bd_sorted)
-    print("bd sorted")
+    print("The boundary, with",len(bd_e)," edges,  has been sorted")
     q = Queue(maxsize=250000)
 
     for i in bd_sorted:
         q.put(i)
-
     print("Start Elimination")
     s.edge_elimination(q,0.0,bd_sorted)
-
-    print("End of elimination")
+    print("\nEnd of elimination")
+    plt.figure(figsize=(10, 10))
     for edge in s.edgeList.values():
-        v1 = s.getVertex(edge.fro)
-        v2 = s.getVertex(edge.to)
-        x1, x2 = v1.x, v2.x
-        y1, y2 = v1.y, v2.y
-        print(x1,x2,y1,y2)
-        plt.plot([x1,x2],[y1,y2],color='coral')
+        proposal = edge
+        if proposal.is_boundary == True:
+            v1 = s.getVertex(edge.fro)
+            v2 = s.getVertex(edge.to)
+            x1, x2 = v1.x, v2.x
+            y1, y2 = v1.y, v2.y
+            plt.plot([x1,x2],[y1,y2],color='coral')
+    end_time =  time.time()
+    dtime = end_time - start_time
+    print("Program running time：%.8s s" % dtime)
     plt.grid()
     plt.show()

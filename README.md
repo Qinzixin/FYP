@@ -30,9 +30,9 @@ Type of study: Theoretical Study
         - the edge elimination only works for a single round (3.7) 
            - debug method: need to design specific sample input to debug (3.9 completed)
    - **anti_edge** function improved(3.10)
+   - **record data size**, running time, analyze efficiency (3.11 done)
 - Under implementation 
-   - ** design experiment features**
-     - record data size, running time, analyze efficiency
+   - **design experiment features**
      - design 3 kinds of point set:
         - Alphabetic set
         - Shape set
