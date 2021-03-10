@@ -11,11 +11,11 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[1,1]])
+points_i = np.array([[-1.564000,53.802913]])
 
 def read_points_data():
     global points_i
-    node_data = open('data/design1.data', 'r')
+    node_data = open('data/node2.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
@@ -47,6 +47,8 @@ def triangulate():
         plt.plot(x,y,color='g')
 
     plt.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
+
+    plt.grid()
     plt.show()
     return edges
 
@@ -109,7 +111,11 @@ def buildGraph(vertices,edges):
               construct edges
             '''
             # generate a edge object
-            new_edge = Edge(e, fro, to, gradient,length)
+            if i==0:
+                anti = e+1
+            else:
+                anti = e-1
+            new_edge = Edge(e, fro, to, gradient,length,anti)
             # append to edge list: id -> edge object
             graph.addEdge(new_edge)
             e= e+1
@@ -156,5 +162,5 @@ if __name__ == "__main__":
         y1, y2 = v1.y, v2.y
         print(x1,x2,y1,y2)
         plt.plot([x1,x2],[y1,y2],color='coral')
-
+    plt.grid()
     plt.show()

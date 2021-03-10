@@ -1,5 +1,5 @@
 class Edge:
-    def __init__(self,key, fro, to, gradient,length):
+    def __init__(self,key, fro, to, gradient,length,anti):
         self.id = key;
         #self.weight = weight;
         self.fro = fro;
@@ -8,6 +8,7 @@ class Edge:
         self.is_boundary = False;
         self.angle = 2e10;
         self.length = length;
+        self.anti = anti;
 
 
     def check_edge_exist(self, f, t):

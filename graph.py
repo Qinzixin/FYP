@@ -84,6 +84,7 @@ class Graph:
     # 图变化后需要重新生成
     def replace_by_vertex(self, e_id, transition_id, change):
         def generate_rpl_vertex():
+            self.vertex_repl.clear()
             for edge in self.edgeList.values():
                 vertex = edge.to  # vertex is an id
                 self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
@@ -229,7 +230,7 @@ class Graph:
         def reveal(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
-            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,True)
+            reveal_edge_0 = self.replace_by_vertex(self.edgeList[edge_id].anti, edge.fro,True)
 
             reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,True)
             inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,True)
@@ -246,6 +247,7 @@ class Graph:
 
             return reveal
 
+        # only to be used in regular judgement
         def reveal2(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
@@ -264,7 +266,7 @@ class Graph:
                 vertex = inner_vertex
             else:
                 #reveal = reveal_edge_0
-                anti_edge = self.edgeList[edge_id + 1]
+                anti_edge =self.edgeList[self.edgeList[edge_id].anti]
                 r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to,True)
                 r2 = self.edgeList[r2_id]
                 vertex = r2.to
@@ -287,16 +289,29 @@ class Graph:
             if regular(e) and self.edgeList[e].length>l:
                 print(e)
                 dart_1 = e
-                dart_2 = e+1
+                dart_2 = self.edgeList[e].anti
                 r1 = reveal(dart_1)
                 vertex_r = self.edgeList[r1].to
                 self.verList[vertex_r].bd = True
                 r2 = self.vertex_repl[r1,vertex_r]
+                # remove edge from vertex's incident edges
+                start = self.edgeList[dart_1].fro
+                to = self.edgeList[dart_1].to
+                v_start = self.verList[start]
+                v_to = self.verList[to]
+                v_start.edges.remove(self.edgeList[e])
+                anti_e_id = self.edgeList[e].anti
+                v_to.edges.remove(self.edgeList[anti_e_id])
+                # remove edge from queue and delete the edge from the graph
+                print(len(self.edgeList))
                 self.edgeList.pop(dart_1)
                 self.edgeList.pop(dart_2)
+                print(len(self.edgeList))
+                # add reveal edge to the list
                 edge_queue.put(r1)
+                edge_queue.put(self.edgeList[r1].anti)
                 edge_queue.put(r2)
-
+                edge_queue.put(self.edgeList[r2].anti)
             else:
                 print(e)
                 print(" is not regular")
