@@ -12,11 +12,11 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[-1.562377,53.807817]])
+points_i = np.array([[205,586]])
 
 def read_points_data():
     global points_i
-    node_data = open('data/node2.data', 'r')
+    node_data = open('sample_by_rate.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
@@ -142,6 +142,7 @@ if __name__ == "__main__":
     s.edge_elimination(q,0.0,bd_sorted)
     print("\nEnd of elimination")
     plt.figure(figsize=(10, 10))
+    bd_f = []
     for edge in s.edgeList.values():
         proposal = edge
         if proposal.is_boundary == True:
@@ -150,8 +151,24 @@ if __name__ == "__main__":
             x1, x2 = v1.x, v2.x
             y1, y2 = v1.y, v2.y
             plt.plot([x1,x2],[y1,y2],color='coral')
+            bd_f.append(edge)
     end_time =  time.time()
     dtime = end_time - start_time
     print("Program running time：%.8s s" % dtime)
     plt.grid()
     plt.show()
+
+    current_proposal = bd_f[0]
+    record = []
+    while bd_f != None:
+        for edge in bd_f:
+            if edge.fro == current_proposal.to:
+                record.append(edge)
+                edge_anti = s.edgeList[current_proposal.anti]
+                if edge_anti in bd_f:
+                    bd_f.remove(edge_anti)
+                bd_f.remove(current_proposal)
+                current_proposal = edge
+    for edge in bd_f:
+        print(edge.fro," ",edge.to,end=' ')
+

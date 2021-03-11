@@ -37,6 +37,8 @@ Type of study: Theoretical Study
         - Alphabetic set
         - Shape set
         - Geography set
+     - It is important to download python package with "--target" location, then update the imterpretor in pycharm
+     - Begin test in small data set.
    - ** conduct experiment**
 
 # Key dates

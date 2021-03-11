@@ -1,37 +1,44 @@
-import math
-if __name__ == "__main__":
-    base = [-2,-3]
-    a = [-2,4]
-    b = [2,-1]
-    c = [-1,-2]
-    # the problem is to judge which vector is the closest to a in Clockwise direction
-    # of course, answer should be (2,-1)
-    # it may appear to our mind that what if base meets identical vector
-    d = [-2,-3]
-    list = [a,b,c,d]
-    for vec in list:
-        x1 = base[0]
-        y1 = base[1]
-        x2 = vec[0]
-        y2 = vec[1]
-        dot = x1 * y2 - x2 * y1
-        modulus_1 = math.sqrt(x1 * x1 + y1 * y1)
-        modulus_2 = math.sqrt(x2 * x2 + y2 * y2)
-        inner = x1 * x2 + y1 * y2
-        result = (modulus_1 * modulus_2)
-        value = inner / result
-        print(value)
-        theta = math.acos(value)
-        print(theta)
-        print(math.degrees(theta))
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
 
-        if(x1 == x2 and y1 ==y2):
-            print("The same")
-        else:
-            dot = x1*y2 - x2*y1
-            if dot > 0:
-                print(x2,y2,"is beyond 180")
-            else:
-                print(x2, y2, "is within 180")
+# read the image
+img = cv2.imread("image/L.png",0)
+
+# property of img
+height = img.shape[0]
+width = img.shape[1]
+
+# generate a m*n float numbers in range [0,1)
+mask = np.random.rand(height,width)
 
 
+# iterate each pixel, with 1-90% as sample rate
+selected_points = []
+# 打开一个文件
+fo = open("sample_by_rate.data", "w")
+
+plt.figure()
+for h in range(height):
+    for w in range(width):
+        if img[h,w] != 255 and mask[h,w] > 0.99:
+            selected_points.append([w,height-h]) # conversion between two coordinate system
+            plt.plot(w,height-h,'bo')
+            s = "\n"+str(w)+" "+str(height-h)
+            fo.write(s)
+# 关闭打开的文件
+fo.close()
+plt.show()
+plt.figure()
+
+
+# sample by fixed number of points
+num_points = 1000
+points = set()
+while(len(points) < num_points):
+    rdi = np.random.randint(img.shape[0])
+    rdj = np.random.randint(img.shape[1])
+    if img[rdi,rdj] != 255 and (rdi,rdj) not in points:
+        points.add((rdj,height-rdi))
+        plt.plot([rdj],[height-rdi],'bo')
+plt.show()

@@ -281,7 +281,7 @@ class Graph:
 
         print("Remain elements in queue:", end=' ')
         while not edge_queue.empty():
-            print(edge_queue.qsize(),end='')
+            print(edge_queue.qsize(), " ", end='')
             e = edge_queue.get()
             e2 = edge_queue.get()
             if regular(e) and self.edgeList[e].length>l:
