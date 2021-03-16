@@ -15,7 +15,7 @@ Type of study: Theoretical Study
 
     | Image | Sample rate (log) | Accuracy | Jaccard Index | Date |
     |  ----  | ----  | ----  | ----  | ----  |
-    | L | -3.1 | 0.531383 |  0.521383| 0.507841  | 3.17 |
+    | L | -3.1 | 0.531383 |  0.507841  | 3.17 |
 
 - To be implemented further
     - the code need to be merged to record time consumption
