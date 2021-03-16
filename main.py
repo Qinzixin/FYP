@@ -12,7 +12,7 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[205,586]])
+points_i = np.array([[209,586]])
 
 def read_points_data():
     global points_i
@@ -38,13 +38,13 @@ def triangulate():
     edges_match = np.array(edges)
     fro = points[edges_match[:,0]]
     to = points[edges_match[:,1]]
-
+    plt.figure(figsize=(10, 10))
     for i in range(len(fro)):
         x = [fro[i][0], to[i][0]]
         y = [fro[i][1], to[i][1]]
         plt.plot(x,y,color='g')
 
-    plt.figure(figsize=(10, 10))
+
     plt.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
 
     plt.grid()
@@ -129,6 +129,7 @@ if __name__ == "__main__":
     s = buildGraph(map,matrix)
     print("The graph has been built. ")
     points = np.array(map)
+    plt.figure(figsize=(10, 10))
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=1.5)
     bd_e = s.get_boundary_edges
     bd_v = s.get_boundary_vertex(bd_e)
@@ -141,7 +142,6 @@ if __name__ == "__main__":
     print("Start Elimination")
     s.edge_elimination(q,0.0,bd_sorted)
     print("\nEnd of elimination")
-    plt.figure(figsize=(10, 10))
     bd_f = []
     for edge in s.edgeList.values():
         proposal = edge
@@ -160,15 +160,32 @@ if __name__ == "__main__":
 
     current_proposal = bd_f[0]
     record = []
-    while bd_f != None:
+    record.append(s.edgeList[current_proposal.id])
+    while len(bd_f) >1:
         for edge in bd_f:
-            if edge.fro == current_proposal.to:
+            edge_anti = s.edgeList[current_proposal.anti]
+            if edge.fro == current_proposal.to and edge.id != edge_anti:
                 record.append(edge)
-                edge_anti = s.edgeList[current_proposal.anti]
                 if edge_anti in bd_f:
                     bd_f.remove(edge_anti)
                 bd_f.remove(current_proposal)
                 current_proposal = edge
-    for edge in bd_f:
-        print(edge.fro," ",edge.to,end=' ')
+    co = []
+    for edge in record:
+        #str = "edge (%d) is from %d to %d"  % (edge.id,edge.fro,edge.to)
+        #print(str)
+        point_id = edge.fro
+        point = s.verList[point_id]
+        str = "point (%d) is at %d, %d"  % (point.id,point.x,point.y)
+        print(str)
+        co.append([point.x,point.y])
+    from shapely.geometry import Polygon
+    polygon = Polygon(co)
+    print(polygon.area)
+    # Othe file to store data
+    file_p = open("estimated_polygon.data", "w")
 
+    for coordinate in co:
+        s = "%f %f \n" % (coordinate[0],coordinate[1])
+        file_p.write(s)
+    file_p.close()

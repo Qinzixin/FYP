@@ -12,10 +12,10 @@ width = img.shape[1]
 # generate a m*n float numbers in range [0,1)
 mask = np.random.rand(height,width)
 
-
 # iterate each pixel, with 1-90% as sample rate
 selected_points = []
-# 打开一个文件
+
+# Othe file to store data
 fo = open("sample_by_rate.data", "w")
 
 plt.figure()
@@ -26,12 +26,12 @@ for h in range(height):
             plt.plot(w,height-h,'bo')
             s = "\n"+str(w)+" "+str(height-h)
             fo.write(s)
-# 关闭打开的文件
+
 fo.close()
 plt.show()
 plt.figure()
 
-
+'''
 # sample by fixed number of points
 num_points = 1000
 points = set()
@@ -42,3 +42,4 @@ while(len(points) < num_points):
         points.add((rdj,height-rdi))
         plt.plot([rdj],[height-rdi],'bo')
 plt.show()
+'''

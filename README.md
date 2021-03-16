@@ -33,10 +33,10 @@ Type of study: Theoretical Study
    - **record data size**, running time, analyze efficiency (3.11 done)
 - Under implementation 
    - **design experiment features**
-     - design 3 kinds of point set:
-        - Alphabetic set
-        - Shape set
-        - Geography set
+     - **generate_test_set**
+        -(3.16) able to output the constructed polygon(CP)
+        -(3.16) calculate the maze of the CP
+- Tips
      - It is important to download python package with "--target" location, then update the imterpretor in pycharm
      - Begin test in small data set.
    - ** conduct experiment**
