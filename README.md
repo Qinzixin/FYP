@@ -41,10 +41,10 @@ Type of study: Theoretical Study
    - **anti_edge** function improved(3.10)
    - **record data size**, running time, analyze efficiency (3.11 done)
    - **design experiment features**
-      - **generate_test_set**
-        -(3.16) able to output the constructed polygon(CP)
-        -(3.16) calculate the maze of the CP
-        -(3.17) finish experiment on image "L"
+        - **generate_test_set**
+        - (3.16) able to output the constructed polygon(CP)
+        - (3.16) calculate the maze of the CP
+        - (3.17) finish experiment on image "L"
         
 - Tips
      - It is important to download python package with "--target" location, then update the imterpretor in pycharm
