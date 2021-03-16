@@ -11,6 +11,13 @@ Candidate: Zixin Qin
 Type of study: Theoretical Study
 
 # Developer's notes
+- Experiment status
+| Image | Sample rate (log) | Accuracy | Jaccard Index | Date |
+| L | -3.1 | 0.531383 |  0.521383| 0.507841  | 3.17 |
+
+- To be implemented further
+    - the code need to be merged to record time consumption
+    - the code should be refactored to be more Object-oriented
 
 - Implemented Functionalities
   - **replace_by_edge** done, rather trival (2021.1.6)
@@ -31,11 +38,12 @@ Type of study: Theoretical Study
            - debug method: need to design specific sample input to debug (3.9 completed)
    - **anti_edge** function improved(3.10)
    - **record data size**, running time, analyze efficiency (3.11 done)
-- Under implementation 
    - **design experiment features**
-     - **generate_test_set**
+      - **generate_test_set**
         -(3.16) able to output the constructed polygon(CP)
         -(3.16) calculate the maze of the CP
+        -(3.17) finish experiment on image "L"
+        
 - Tips
      - It is important to download python package with "--target" location, then update the imterpretor in pycharm
      - Begin test in small data set.

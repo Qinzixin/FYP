@@ -19,14 +19,27 @@ selected_points = []
 fo = open("sample_by_rate.data", "w")
 
 plt.figure()
+num = 0
+density = 0.00079432
+num_points = density * height * width
+print(num_points)
+points = set()
+while(len(points) < num_points):
+    h = np.random.randint(height)
+    w = np.random.randint(width)
+    if img[h,w] != 255 and (h,w) not in points:
+        points.add((w,height-h))
+        plt.plot([w],[height-h],'bo')
+        s = "\n" + str(w) + " " + str(height - h)
+        fo.write(s)
+plt.show()
+'''
 for h in range(height):
     for w in range(width):
-        if img[h,w] != 255 and mask[h,w] > 0.99:
+        if img[h,w] != 255 and mask[h,w] > 0.98:
             selected_points.append([w,height-h]) # conversion between two coordinate system
             plt.plot(w,height-h,'bo')
-            s = "\n"+str(w)+" "+str(height-h)
-            fo.write(s)
-
+'''
 fo.close()
 plt.show()
 plt.figure()

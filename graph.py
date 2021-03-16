@@ -230,13 +230,13 @@ class Graph:
             edge = self.edgeList[edge_id]
             reveal_edge_0 = self.replace_by_vertex(self.edgeList[edge_id].anti, edge.fro,True)
 
-            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,True)
-            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,True)
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,False)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,False)
 
-            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,True)
-            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,True)
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,False)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,False)
 
-            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,True)
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,False)
 
             if reveal_edge_3 == edge_id:
                 reveal = reveal_edge_1
@@ -251,13 +251,13 @@ class Graph:
             edge = self.edgeList[edge_id]
             reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,True)
 
-            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,True)
-            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,True)
+            reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,False)
+            inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,False)
 
-            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,True)
-            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,True)
+            reveal_edge_2 = self.replace_by_vertex(reveal_edge_1, inner_vertex,False)
+            out_vertex = self.replace_by_edge(inner_vertex, reveal_edge_2,False)
 
-            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,True)
+            reveal_edge_3 = self.replace_by_vertex(reveal_edge_2, out_vertex,False)
 
             if reveal_edge_3 == edge_id:
                 #reveal = reveal_edge_1
