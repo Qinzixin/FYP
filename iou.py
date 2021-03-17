@@ -1,5 +1,5 @@
 import numpy as np
-points_i = np.array([[213.000000,585.000000 ]])
+points_i = np.array([[187.000000, 627.000000 ]])
 polygon_data = open('estimated_polygon.data', 'r')
 for line in polygon_data:
     records = line.split()
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 # read the image
-img = cv2.imread("image/L/L.png",0)
+img = cv2.imread("image/E/E.png",0)
 
 # property of img
 height = img.shape[0]
@@ -70,7 +70,7 @@ accuracy = intersection_area/(intersection_area + false_img_area)
 print("Accuracy: %f" % accuracy)
 iou = intersection_area / ((m.area) + false_img_area)
 print("IOU:%f" % iou)
-plt.plot(xpoints, ypoints, 'g')
-plt.plot(xpoints_t, ypoints_t, color='b',alpha=0.2)
-plt.plot(xpoints_f, ypoints_f, 'y')
+plt.plot(xpoints, ypoints, 'o',color='g',markersize=0.8)
+plt.plot(xpoints_t, ypoints_t,'o', color='b',alpha=0.2,markersize=0.8)
+plt.plot(xpoints_f, ypoints_f,'o',color='y',markersize=0.8)
 plt.show()

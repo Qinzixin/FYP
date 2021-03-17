@@ -12,7 +12,7 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 # 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[216,586]])
+points_i = np.array([[377,309]])
 
 def read_points_data():
     global points_i

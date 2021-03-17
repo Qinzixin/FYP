@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # read the image
-img = cv2.imread("image/L.png",0)
+img = cv2.imread("image/E/E.png",0)
 
 # property of img
 height = img.shape[0]

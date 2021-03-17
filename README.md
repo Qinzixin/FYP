@@ -13,13 +13,16 @@ Type of study: Theoretical Study
 # Developer's notes
 - Experiment status
 
-    | Image | Sample rate (log) | Accuracy | Jaccard Index | Date |
+    | Image | Sample rate (log) | Accuracy | Jaccard Index | Time consumption |
     |  ----  | ----  | ----  | ----  | ----  |
-    | L | -3.1 | 0.531383 |  0.507841  | 3.17 |
+    | L | -3.1 | 0.531383 |  0.507841  | TBD |
+    | A | -3.1 | 0.487825 | 0.373865 | TBD |
+    | E |-3.1 |0.464155|0.347575|109.8967|
 
 - To be implemented further
     - the code need to be merged to record time consumption
     - the code should be refactored to be more Object-oriented
+    - Is there a need to process the whole data set?
 
 - Implemented Functionalities
   - **replace_by_edge** done, rather trival (2021.1.6)
