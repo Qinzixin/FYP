@@ -30,7 +30,7 @@ while(len(points) < num_points):
     if img[h,w] != 255 and (h,w) not in points:
         points.add((w,height-h))
         plt.plot([w],[height-h],'bo')
-        s = "\n" + str(w) + " " + str(height - h)
+        s =  str(w) + " " + str(height - h)+ "\n"
         fo.write(s)
 plt.show()
 '''

@@ -11,6 +11,9 @@ Candidate: Zixin Qin
 Type of study: Theoretical Study
 
 # Developer's notes
+- Current Job
+    **Need to automate the learning process**
+    **Need to optimize the parameter setting on "L" dataset**
 - Experiment status
 
     | Image | Sample rate (log) | Accuracy | Jaccard Index | Time consumption |
@@ -20,8 +23,7 @@ Type of study: Theoretical Study
     | E |-3.1 |0.464155|0.347575|109.8967|
 
 - To be implemented further
-    - the code need to be merged to record time consumption
-    - the code should be refactored to be more Object-oriented
+    - the code need to be merged to record time consumption and to be more Object-oriented
     - Is there a need to process the whole data set?
 
 - Implemented Functionalities
