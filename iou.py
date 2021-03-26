@@ -1,6 +1,6 @@
 import numpy as np
-points_i = np.array([[187.000000, 627.000000 ]])
-polygon_data = open('estimated_polygon.data', 'r')
+points_i = np.array([[192.000000, 626.000000 ]])
+polygon_data = open('image/L/L_est.data', 'r')
 for line in polygon_data:
     records = line.split()
     x = float(records[0])
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 # read the image
-img = cv2.imread("image/E/E.png",0)
+img = cv2.imread("image/L/L.png",0)
 
 # property of img
 height = img.shape[0]

@@ -11,21 +11,21 @@ from queue import Queue
 from scipy.spatial import Delaunay
 import numpy as np
 
-# 在建图时应该尽量用graph层次提供的api
-points_i = np.array([[377,309]])
+points_i = []
+minimum_length = 100
 
 def read_points_data():
     global points_i
-    node_data = open('sample_by_rate.data', 'r')
+    node_data = open('image/L/L.data', 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
         y = float(records[1])
-        points_i = np.append(points_i, [[x, y]], axis=0)
+        points_i.append([x,y])
     node_data.close()
 
 def triangulate():
-    points = points_i
+    points = np.array(points_i)
     tri = Delaunay(points)
     edges = []
     for relation in tri.simplices:
@@ -45,7 +45,7 @@ def triangulate():
         plt.plot(x,y,color='g')
 
 
-    plt.plot(points_i[:, 0], points_i[:, 1], 'o',color="black",markersize=0.5)
+    plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=0.5)
 
     plt.grid()
     plt.show()
@@ -56,7 +56,7 @@ def triangulate():
 # map is okay
 read_points_data()
 edges = triangulate()
-map = points_i.tolist()
+map = points_i
 
 # edge : start node, end node and length
 matrix = edges
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     for i in bd_sorted:
         q.put(i)
     print("Start Elimination")
-    s.edge_elimination(q,0.0,bd_sorted)
+    s.edge_elimination(q,minimum_length,bd_sorted)
     print("\nEnd of elimination")
     bd_f = []
     for edge in s.edgeList.values():
@@ -163,6 +163,7 @@ if __name__ == "__main__":
     record.append(s.edgeList[current_proposal.id])
     while len(bd_f) >1:
         for edge in bd_f:
+            print(edge.id)
             edge_anti = s.edgeList[current_proposal.anti]
             if edge.fro == current_proposal.to and edge.id != edge_anti:
                 record.append(edge)
@@ -172,8 +173,8 @@ if __name__ == "__main__":
                 current_proposal = edge
     co = []
     for edge in record:
-        #str = "edge (%d) is from %d to %d"  % (edge.id,edge.fro,edge.to)
-        #print(str)
+        str = "edge (%d) is from %d to %d"  % (edge.id,edge.fro,edge.to)
+        print(str)
         point_id = edge.fro
         point = s.verList[point_id]
         str = "point (%d) is at %d, %d"  % (point.id,point.x,point.y)
@@ -183,7 +184,7 @@ if __name__ == "__main__":
     polygon = Polygon(co)
     print(polygon.area)
     # Othe file to store data
-    file_p = open("estimated_polygon.data", "w")
+    file_p = open("image/L/L_est.data", "w")
 
     for coordinate in co:
         s = "%f %f \n" % (coordinate[0],coordinate[1])

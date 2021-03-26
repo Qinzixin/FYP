@@ -12,8 +12,8 @@ Type of study: Theoretical Study
 
 # Developer's notes
 - Current Job
-    **Need to automate the learning process**
-    **Need to optimize the parameter setting on "L" dataset**
+    -   **Need to automate the learning process**
+    -   **Need to optimize the parameter setting on "L" dataset**
 - Experiment status
 
     | Image | Sample rate (log) | Accuracy | Jaccard Index | Time consumption |
