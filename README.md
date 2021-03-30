@@ -16,11 +16,11 @@ Type of study: Theoretical Study
     -   **Need to optimize the parameter setting on "L" dataset**
 - Experiment status
 
-    | Image | Sample rate (log) | Accuracy | Jaccard Index | Time consumption |
-    |  ----  | ----  | ----  | ----  | ----  |
-    | L | -3.1 | 0.531383 |  0.507841  | TBD |
-    | A | -3.1 | 0.487825 | 0.373865 | TBD |
-    | E |-3.1 |0.464155|0.347575|109.8967|
+    | Image | Sample rate (log) | L value | Accuracy | Jaccard Index | Time consumption |
+    |  ----  | ----  | ---- |----  | ----  | ----  |
+    | L | -3.1 | 150 | 
+    | L | -3.1 | 100 | 0.910806 |  0.903326 | 20.84901 |
+    | L | -3.1 | 200 | 0.939103 | 0.805586 | 10.06925 |
 
 - To be implemented further
     - the code need to be merged to record time consumption and to be more Object-oriented

@@ -4,9 +4,19 @@ import copy
 
 
 import functools
+import matplotlib.pyplot as plt
 
 
 class Graph:
+    # paint all edges in list
+    def paint(self, list):
+        for edge in list:
+            v1 = self.getVertex(edge.fro)
+            v2 = self.getVertex(edge.to)
+            x1, x2 = v1.x, v2.x
+            y1, y2 = v1.y, v2.y
+            plt.plot([x1, x2], [y1, y2], color='green')
+
     def __init__(self):
         self.verList = {}  # v-id -> vertex object
         self.edgeList = {}  # e-id -> edge object
@@ -270,7 +280,6 @@ class Graph:
                 vertex = r2.to
             return vertex
 
-
         def regular(edge_id):
             v = reveal2(edge_id)
             vertex = self.verList[v]
@@ -309,4 +318,15 @@ class Graph:
                 edge_queue.put(self.edgeList[r1].anti)
                 edge_queue.put(r2)
                 edge_queue.put(self.edgeList[r2].anti)
-
+                '''
+                def get_queue_elements(q1):
+                    q2 = copy.deepcopy(q1)
+                    list = []
+                    while not q2.empty():
+                        element = q2.pop()
+                        list.append(element)
+                    return list
+                self.paint(get_queue_elements(edge_queue))
+                '''
+                a = list(edge_queue.queue)
+                print(a)

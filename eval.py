@@ -1,15 +1,15 @@
 import numpy as np
-points_i = np.array([[192.000000, 626.000000 ]])
+points_i = []
 polygon_data = open('image/L/L_est.data', 'r')
 for line in polygon_data:
     records = line.split()
     x = float(records[0])
     y = float(records[1])
-    points_i = np.append(points_i, [[x, y]], axis=0)
+    points_i.append([x, y])
 polygon_data.close()
 
 from shapely.geometry import Polygon,Point
-vertices_p = points_i.tolist()
+vertices_p = points_i
 m = Polygon(vertices_p)
 print("generated shape area: %f" % m.area)
 
@@ -70,7 +70,7 @@ accuracy = intersection_area/(intersection_area + false_img_area)
 print("Accuracy: %f" % accuracy)
 iou = intersection_area / ((m.area) + false_img_area)
 print("IOU:%f" % iou)
-plt.plot(xpoints, ypoints, 'o',color='g',markersize=0.8)
-plt.plot(xpoints_t, ypoints_t,'o', color='b',alpha=0.2,markersize=0.8)
-plt.plot(xpoints_f, ypoints_f,'o',color='y',markersize=0.8)
+plt.plot(xpoints, ypoints, 'o',color='#0099CC',markersize=1.0)
+plt.plot(xpoints_t, ypoints_t,'o', color='#CCCCCC',alpha=0.2,markersize=1.0)
+plt.plot(xpoints_f, ypoints_f,'o',color='#FF6666',markersize=1.0)
 plt.show()

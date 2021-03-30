@@ -12,7 +12,8 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 points_i = []
-minimum_length = 100
+minimum_length = 120
+
 
 def read_points_data():
     global points_i
@@ -43,10 +44,7 @@ def triangulate():
         x = [fro[i][0], to[i][0]]
         y = [fro[i][1], to[i][1]]
         plt.plot(x,y,color='g')
-
-
     plt.plot(points[:, 0], points[:, 1], 'o',color="black",markersize=0.5)
-
     plt.grid()
     plt.show()
     return edges
@@ -165,7 +163,7 @@ if __name__ == "__main__":
         for edge in bd_f:
             print(edge.id)
             edge_anti = s.edgeList[current_proposal.anti]
-            if edge.fro == current_proposal.to and edge.id != edge_anti:
+            if (edge.fro == current_proposal.to and edge.id != edge_anti.id) or len(bd_f)==2:
                 record.append(edge)
                 if edge_anti in bd_f:
                     bd_f.remove(edge_anti)
@@ -185,8 +183,12 @@ if __name__ == "__main__":
     print(polygon.area)
     # Othe file to store data
     file_p = open("image/L/L_est.data", "w")
-
     for coordinate in co:
         s = "%f %f \n" % (coordinate[0],coordinate[1])
         file_p.write(s)
     file_p.close()
+
+    file_t = open("image/L/L_time.data", "w")
+    s = "Program running time：%.8s s" % dtime
+    file_t.write(s)
+    file_t.close()
