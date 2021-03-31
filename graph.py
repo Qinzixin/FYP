@@ -9,13 +9,22 @@ import matplotlib.pyplot as plt
 
 class Graph:
     # paint all edges in list
-    def paint(self, list):
-        for edge in list:
-            v1 = self.getVertex(edge.fro)
-            v2 = self.getVertex(edge.to)
-            x1, x2 = v1.x, v2.x
-            y1, y2 = v1.y, v2.y
-            plt.plot([x1, x2], [y1, y2], color='green')
+    def paint(self):
+        for edge_id in self.edgeList:
+            edge = self.edgeList[edge_id]
+            if edge.is_boundary == True:
+                v1 = self.getVertex(edge.fro)
+                v2 = self.getVertex(edge.to)
+                x1, x2 = v1.x, v2.x
+                y1, y2 = v1.y, v2.y
+                plt.plot([x1, x2], [y1, y2], color='blue')
+            else:
+                v1 = self.getVertex(edge.fro)
+                v2 = self.getVertex(edge.to)
+                x1, x2 = v1.x, v2.x
+                y1, y2 = v1.y, v2.y
+                plt.plot([x1, x2], [y1, y2], color='grey',alpha=0.2)
+        plt.show()
 
     def __init__(self):
         self.verList = {}  # v-id -> vertex object
@@ -329,4 +338,4 @@ class Graph:
                 self.paint(get_queue_elements(edge_queue))
                 '''
                 a = list(edge_queue.queue)
-                print(a)
+                self.paint()
