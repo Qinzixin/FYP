@@ -12,9 +12,9 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 
-file_link = "data/sample_points/GeographySet/Ireland.data"
-output_link = "data/approximation/GeographySet/Ireland_shape.data"
-output_link2 = "data/evaluation/GeographySet/Ireland_time.data"
+file_link = "data/sample_points/GeographySet/France.data"
+output_link = "data/approximation/GeographySet/France_shape.data"
+output_link2 = "data/evaluation/GeographySet/France_time.data"
 
 def read_points_data():
     global points_i
@@ -110,13 +110,51 @@ def buildGraph(vertices,edges):
 
 if __name__ == "__main__":
     points_i = []
-    minimum_length = 120
+    minimum_length = 150
     # vertex location, in x,y form
     # map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
     # map is okay
     read_points_data()
     edges = triangulate()
     map = points_i
+    # this is the convex hull part
+    '''
+    from scipy.spatial import ConvexHull, convex_hull_plot_2d
+    points_c = np.array(points_i)
+    hull = ConvexHull(points_c)
+    plt.figure(figsize=(10, 10))
+    axes = plt.gca()
+    axes.set_xlim([0, 600])
+    axes.set_ylim([0, 750])
+    plt.axis('equal')
+    plt.plot(points_c[:, 0], points_c[:, 1], 'o')
+    for simplex in hull.simplices:
+        plt.plot(points_c[simplex, 0], points_c[simplex, 1], 'k-')
+    plt.plot(points_c[hull.vertices, 0], points_c[hull.vertices, 1], 'b')
+   # plt.plot(points_c[hull.vertices[0], 0], points_c[hull.vertices[0], 1], 'ro')
+    plt.show()
+    print("end of convex hull")
+    '''
+
+    # this is the alpha shape part
+    '''
+    from descartes import PolygonPatch
+    import matplotlib.pyplot as plt
+    import alphashape
+    plt.figure(figsize=(10, 10))
+    axes = plt.gca()
+    axes.set_xlim([0, 600])
+    axes.set_ylim([0, 750])
+    plt.axis('equal')
+    points_a = np.array(points_i)
+    alpha_shape = alphashape.alphashape(points_a)
+    fig, ax = plt.subplots()
+    ax.scatter(*zip(*points_a))
+    ax.add_patch(PolygonPatch(alpha_shape, alpha=5))
+    plt.show()
+    print("End of alpha shape")
+    '''
+
 
     # edge : start node, end node and length
     matrix = edges
@@ -124,6 +162,8 @@ if __name__ == "__main__":
     # to be generated
     # map is the set of vertex coordinate
     # matrix is the edge relation
+
+
     print("The algorithm starts")
     start_time =  time.time()
     s = buildGraph(map,matrix)

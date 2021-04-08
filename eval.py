@@ -1,7 +1,7 @@
-image = "image/GeographySet/Ireland.png"
-file_link = "data/sample_points/GeographySet/Ireland.data"
-output_link = "data/approximation/GeographySet/Ireland_shape.data"
-output_link2 = "data/evaluation/GeographySet/Ireland_score.data"
+image = "image/GeographySet/France.png"
+file_link = "data/sample_points/GeographySet/France.data"
+output_link = "data/approximation/GeographySet/France_shape.data"
+output_link2 = "data/evaluation/GeographySet/France_score.data"
 
 import numpy as np
 points_i = []
