@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 class Graph:
     # paint all edges in list
     def paint(self):
+        plt.figure(figsize=(10, 10))
+        axes = plt.gca()
+        axes.set_xlim([0, 600])
+        axes.set_ylim([0, 750])
+        plt.axis('equal')
         for edge_id in self.edgeList:
             edge = self.edgeList[edge_id]
             if edge.is_boundary == True:
@@ -17,14 +22,18 @@ class Graph:
                 v2 = self.getVertex(edge.to)
                 x1, x2 = v1.x, v2.x
                 y1, y2 = v1.y, v2.y
-                plt.plot([x1, x2], [y1, y2], color='blue')
+                plt.plot([x1, x2], [y1, y2], color='blue',markersize=1.5)
             else:
                 v1 = self.getVertex(edge.fro)
                 v2 = self.getVertex(edge.to)
                 x1, x2 = v1.x, v2.x
                 y1, y2 = v1.y, v2.y
-                plt.plot([x1, x2], [y1, y2], color='grey',alpha=0.2)
+                plt.plot([x1, x2], [y1, y2], color='grey',alpha=0.5)
+        self.round = self.round + 1
+        save_link = "image/Elimination/%d.png" % self.round
+        plt.savefig(save_link,dpi=200)
         plt.show()
+
 
     def __init__(self):
         self.verList = {}  # v-id -> vertex object
@@ -34,6 +43,7 @@ class Graph:
         self.edge_repl = {}
         self.vertex_repl = {}
         self.boundary = []
+        self.round = 0
 
     def get_edge_set(self):
         return self.edgeList
@@ -327,15 +337,5 @@ class Graph:
                 edge_queue.put(self.edgeList[r1].anti)
                 edge_queue.put(r2)
                 edge_queue.put(self.edgeList[r2].anti)
-                '''
-                def get_queue_elements(q1):
-                    q2 = copy.deepcopy(q1)
-                    list = []
-                    while not q2.empty():
-                        element = q2.pop()
-                        list.append(element)
-                    return list
-                self.paint(get_queue_elements(edge_queue))
-                '''
                 a = list(edge_queue.queue)
                 self.paint()

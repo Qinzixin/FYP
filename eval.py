@@ -1,6 +1,11 @@
+image = "image/GeographySet/Ireland.png"
+file_link = "data/sample_points/GeographySet/Ireland.data"
+output_link = "data/approximation/GeographySet/Ireland_shape.data"
+output_link2 = "data/evaluation/GeographySet/Ireland_score.data"
+
 import numpy as np
 points_i = []
-polygon_data = open('image/L/L_est.data', 'r')
+polygon_data = open(output_link, 'r')
 for line in polygon_data:
     records = line.split()
     x = float(records[0])
@@ -16,8 +21,10 @@ print("generated shape area: %f" % m.area)
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+
+
 # read the image
-img = cv2.imread("image/L/L.png",0)
+img = cv2.imread(image,0)
 
 # property of img
 height = img.shape[0]
@@ -73,4 +80,19 @@ print("IOU:%f" % iou)
 plt.plot(xpoints, ypoints, 'o',color='#0099CC',markersize=1.0)
 plt.plot(xpoints_t, ypoints_t,'o', color='#CCCCCC',alpha=0.2,markersize=1.0)
 plt.plot(xpoints_f, ypoints_f,'o',color='#FF6666',markersize=1.0)
+
+
+out_link_arr2 = output_link.split("/", 4)
+imgname = out_link_arr2[-1]
+new_folder2 = output_link.replace(out_link_arr2[-1], "")
+import os
+folder_link2 = os.getcwd() + "/" + new_folder2
+if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+    os.makedirs(folder_link2)
+file_t = open(output_link2, "w")
+s = "%f %f %f %f %f" % (accuracy,iou,intersection_area,false_img_area,true_empty_area)
+print(new_folder2 +out_link_arr2[-1][:-5]+".png")
+plt.savefig(new_folder2 +out_link_arr2[-1][:-5]+".png")
 plt.show()
+file_t.write(s)
+file_t.close()

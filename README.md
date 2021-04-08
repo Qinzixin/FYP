@@ -12,13 +12,12 @@ Type of study: Theoretical Study
 
 # Developer's notes
 - Current Job
-    -   **Need to automate the learning process**
     -   **Need to optimize the parameter setting on "L" dataset**
+        Discover the internal pattern bet. max_edge_len and l_opt
 - Experiment status
 
     | Image | Sample rate (log) | L value | Accuracy | Jaccard Index | Time consumption |
     |  ----  | ----  | ---- |----  | ----  | ----  |
-    | L | -3.1 | 150 | 
     | L | -3.1 | 100 | 0.910806 |  0.903326 | 20.84901 |
     | L | -3.1 | 200 | 0.939103 | 0.805586 | 10.06925 |
 
@@ -50,6 +49,7 @@ Type of study: Theoretical Study
         - (3.16) able to output the constructed polygon(CP)
         - (3.16) calculate the maze of the CP
         - (3.17) finish experiment on image "L"
+   - (4.9) **Automate the learning process**
         
 - Tips
      - It is important to download python package with "--target" location, then update the imterpretor in pycharm

@@ -11,13 +11,14 @@ from queue import Queue
 from scipy.spatial import Delaunay
 import numpy as np
 
-points_i = []
-minimum_length = 120
 
+file_link = "data/sample_points/GeographySet/Ireland.data"
+output_link = "data/approximation/GeographySet/Ireland_shape.data"
+output_link2 = "data/evaluation/GeographySet/Ireland_time.data"
 
 def read_points_data():
     global points_i
-    node_data = open('image/L/L.data', 'r')
+    node_data = open(file_link, 'r')
     for line in node_data:
         records = line.split()
         x = float(records[0])
@@ -48,18 +49,6 @@ def triangulate():
     plt.grid()
     plt.show()
     return edges
-
-# vertex location, in x,y form
-# map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
-# map is okay
-read_points_data()
-edges = triangulate()
-map = points_i
-
-# edge : start node, end node and length
-matrix = edges
-#matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
-# to be generated
 
 def buildGraph(vertices,edges):
     graph = Graph()
@@ -120,6 +109,19 @@ def buildGraph(vertices,edges):
 
 
 if __name__ == "__main__":
+    points_i = []
+    minimum_length = 120
+    # vertex location, in x,y form
+    # map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
+    # map is okay
+    read_points_data()
+    edges = triangulate()
+    map = points_i
+
+    # edge : start node, end node and length
+    matrix = edges
+    # matrix = [[1, 3, 1], [1, 4, 2], [2, 3, 3], [2, 4, 4], [3, 5, 5], [4, 5, 6], [1, 2, 7],[2,5,1]]
+    # to be generated
     # map is the set of vertex coordinate
     # matrix is the edge relation
     print("The algorithm starts")
@@ -182,13 +184,27 @@ if __name__ == "__main__":
     polygon = Polygon(co)
     print(polygon.area)
     # Othe file to store data
-    file_p = open("image/L/L_est.data", "w")
+    out_link_arr = output_link.split("/",4)
+    new_folder = output_link.replace(out_link_arr[-1],"")
+    print(new_folder)
+    import os
+    folder_link = os.getcwd() +"/"+ new_folder
+    print(folder_link)
+    if not os.path.exists(folder_link):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link)
+    file_p = open(output_link, "w")
     for coordinate in co:
         s = "%f %f \n" % (coordinate[0],coordinate[1])
         file_p.write(s)
     file_p.close()
 
-    file_t = open("image/L/L_time.data", "w")
-    s = "Program running time：%.8s s" % dtime
+    out_link_arr2 = output_link.split("/",4)
+    new_folder2 = output_link.replace(out_link_arr2[-1],"")
+    import os
+    folder_link2 = os.getcwd() + "/" + new_folder2
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2)
+    file_t = open(output_link2, "w")
+    s = "%.8s s" % dtime
     file_t.write(s)
     file_t.close()

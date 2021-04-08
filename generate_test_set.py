@@ -18,9 +18,13 @@ def generate_test_set(link,density):
     selected_points = []
 
     # Othe file to store data
-    out_link = link[:-4] + ".data"
-    fo = open(out_link, "w")
-
+    out_link = "/data/sample_points"+link[5:-4] + ".data"
+    file_link = out_link.split("/",4)
+    import os
+    new_folder = (os.getcwd() + out_link).replace(file_link[-1], "")
+    if not os.path.exists(new_folder):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(new_folder)
+    fo = open(out_link[1:], 'w')
     plt.figure()
     num = 0
     num_points = density * height * width
@@ -39,3 +43,4 @@ def generate_test_set(link,density):
     plt.show()
     plt.figure()
     print("file %s has been generated" % out_link)
+    return out_link
