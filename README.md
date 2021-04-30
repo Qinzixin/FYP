@@ -1,3 +1,9 @@
+# Current Job
+- Current Job
+    -   **Need to construct comparison between 3 algorithm**
+    -   **Need to optimize the parameter setting on "L" dataset**
+    -   **Complete the paper**
+
 # FYP
 This is the Final Year Project code repository for the project **shape approximation**.
 
@@ -11,9 +17,7 @@ Candidate: Zixin Qin
 Type of study: Theoretical Study
 
 # Developer's notes
-- Current Job
-    -   **Need to optimize the parameter setting on "L" dataset**
-        Discover the internal pattern bet. max_edge_len and l_opt
+
 - Experiment status
 
     | Image | Sample rate (log) | L value | Accuracy | Jaccard Index | Time consumption |
