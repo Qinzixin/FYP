@@ -1,7 +1,7 @@
 # Current Job
 - Current Job
     -   **Need to construct comparison between 3 algorithm**
-    -   **Need to optimize the parameter setting on "L" dataset**
+    -   **Need to optimize the parameter setting on "L" dataset**(5.1 done)
     -   **Complete the paper**
 
 # FYP

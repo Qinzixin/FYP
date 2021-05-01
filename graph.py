@@ -44,6 +44,22 @@ class Graph:
         self.vertex_repl = {}
         self.boundary = []
         self.round = 0
+        self.mean = 0
+        self.variance = 0
+
+    def calculate_distribution(self):
+        total = 0
+        num = 0
+        for edge in self.edgeList.values():
+            total += edge.length
+            num += 1
+        mean = total / num
+        self.mean = mean
+
+        total2 = 0
+        for edge in self.edgeList.values():
+            total2 += (edge.length - mean)*(edge.length - mean)
+        self.variance = total2 / num
 
     def get_edge_set(self):
         return self.edgeList
@@ -213,7 +229,7 @@ class Graph:
                 self.edgeList[k].is_boundary = True
                 self.edgeList[anti_k].is_boundary = True
 
-        print(boundary)
+        #print(boundary)
         return boundary
 
     def get_boundary_vertex(self, boundary):

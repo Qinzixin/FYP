@@ -12,12 +12,7 @@ from scipy.spatial import Delaunay
 import numpy as np
 
 
-file_link = "data/sample_points/GeographySet/France.data"
-output_link = "data/approximation/GeographySet/France_shape.data"
-output_link2 = "data/evaluation/GeographySet/France_time.data"
-
-def read_points_data():
-    global points_i
+def read_points_data(file_link,points_i):
     node_data = open(file_link, 'r')
     for line in node_data:
         records = line.split()
@@ -26,7 +21,7 @@ def read_points_data():
         points_i.append([x,y])
     node_data.close()
 
-def triangulate():
+def triangulate(points_i):
     points = np.array(points_i)
     tri = Delaunay(points)
     edges = []
@@ -103,22 +98,22 @@ def buildGraph(vertices,edges):
             new_edge = Edge(e, fro, to, gradient,length,anti)
             # append to edge list: id -> edge object
             graph.addEdge(new_edge)
+            graph.calculate_distribution()
             e= e+1
     print("The graph contains", e,"edges")
+    print("The graph has",graph.numEdges,"edges")
+    print("The graph's edge mean length is ", graph.mean,"virance as",graph.variance)
     return graph
 
+'''
+sample_point_link = "data/sample_points/GeographySet/France.data"
+output_link = "data/approximation/GeographySet/France_shape.data"
+output_link2 = "data/evaluation/GeographySet/France_time.data"
+'''
 
-if __name__ == "__main__":
+def generate_convex_hull(sample_point_link, output_link, output_link2):
     points_i = []
-    minimum_length = 150
-    # vertex location, in x,y form
-    # map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
-    # map is okay
-    read_points_data()
-    edges = triangulate()
-    map = points_i
-    # this is the convex hull part
-    '''
+    read_points_data(sample_point_link, points_i)
     from scipy.spatial import ConvexHull, convex_hull_plot_2d
     points_c = np.array(points_i)
     hull = ConvexHull(points_c)
@@ -128,16 +123,56 @@ if __name__ == "__main__":
     axes.set_ylim([0, 750])
     plt.axis('equal')
     plt.plot(points_c[:, 0], points_c[:, 1], 'o')
-    for simplex in hull.simplices:
-        plt.plot(points_c[simplex, 0], points_c[simplex, 1], 'k-')
-    plt.plot(points_c[hull.vertices, 0], points_c[hull.vertices, 1], 'b')
-   # plt.plot(points_c[hull.vertices[0], 0], points_c[hull.vertices[0], 1], 'ro')
+    bd = []
+    x,y = points_c[hull.vertices, 0], points_c[hull.vertices, 1]
+    print(x,y)
+    for i in range(len(x)):
+        bd.append([x[i],y[i]])
+        plt.plot(x[i], y[i], 'k-')
+    #plt.plot(points_c[hull.vertices, 0], points_c[hull.vertices, 1], 'b')
+    #plt.plot(points_c[hull.vertices[0], 0], points_c[hull.vertices[0], 1], 'ro')
+    plt.plot(points_c[hull.vertices, 0], points_c[hull.vertices, 1], 'r--', lw=2)
+    #plt.plot(points[hull.vertices[0], 0], points[hull.vertices[0], 1], 'ro')
     plt.show()
+    for pt in bd:
+        print(pt)
     print("end of convex hull")
-    '''
+    # Othe file to store data
+    out_link_arr = output_link.split("/", 4)
+    new_folder = output_link.replace(out_link_arr[-1], "")
+    print(new_folder)
+    import os
+    folder_link = os.getcwd() + "/" + new_folder
+    print(folder_link)
+    if not os.path.exists(folder_link):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link)
+    file_p = open(output_link, "w")
+    for coordinate in bd:
+        print(coordinate)
+        s = "%f %f \n" % (float(coordinate[0]), float(coordinate[1]))
+        file_p.write(s)
+    file_p.close()
+    out_link_arr2 = output_link.split("/", 4)
+    new_folder2 = output_link.replace(out_link_arr2[-1], "")
+    import os
+    folder_link2 = os.getcwd() + "/" + new_folder2
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2)
+        print(folder_link2)
+    output_link2_array = output_link2.split("/", 4)
+    storage = os.getcwd() + "/" + output_link2
+    print(storage)
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2.replace(output_link2_array[-1]), "")
+        print(folder_link2)
+    file_t = open(storage, "w")
+    file_t.write(s)
+    file_t.close()
 
-    # this is the alpha shape part
-    '''
+
+def generate_alpha_shape(sample_point_link, output_link, output_link2):
+    points_i = []
+    read_points_data(sample_point_link, points_i)
     from descartes import PolygonPatch
     import matplotlib.pyplot as plt
     import alphashape
@@ -148,13 +183,60 @@ if __name__ == "__main__":
     plt.axis('equal')
     points_a = np.array(points_i)
     alpha_shape = alphashape.alphashape(points_a)
+    bd = alpha_shape.boundary.coords
+    print(bd)
+    for pt in bd:
+        print(pt)
     fig, ax = plt.subplots()
-    ax.scatter(*zip(*points_a))
-    ax.add_patch(PolygonPatch(alpha_shape, alpha=5))
-    plt.show()
+    ax.scatter(*zip(*bd))
+    #ax.add_patch(PolygonPatch(alpha_shape, alpha=5))
     print("End of alpha shape")
-    '''
+    plt.show()
 
+    # Othe file to store data
+    out_link_arr = output_link.split("/", 4)
+    new_folder = output_link.replace(out_link_arr[-1], "")
+    print(new_folder)
+    import os
+    folder_link = os.getcwd() + "/" + new_folder
+    print(folder_link)
+    if not os.path.exists(folder_link):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link)
+    file_p = open(output_link, "w")
+    for coordinate in bd:
+        coordinate = str(coordinate).replace("(","")
+        coordinate = str(coordinate).replace(")","")
+        coordinate = str(coordinate).split(",")
+        print(coordinate)
+        s = "%f %f \n" % (float(coordinate[0]), float(coordinate[1]))
+        file_p.write(s)
+    file_p.close()
+    out_link_arr2 = output_link.split("/", 4)
+    new_folder2 = output_link.replace(out_link_arr2[-1], "")
+    import os
+    folder_link2 = os.getcwd() + "/" + new_folder2
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2)
+        print(folder_link2)
+    output_link2_array = output_link2.split("/", 4)
+    storage = os.getcwd() + "/" + output_link2
+    print(storage)
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2.replace(output_link2_array[-1]), "")
+        print(folder_link2)
+    file_t = open(storage, "w")
+    file_t.write(s)
+    file_t.close()
+
+
+def generate_chi_shape(sample_point_link,output_link,output_link2):
+    points_i = []
+    # vertex location, in x,y form
+    # map = [[1,1],[2,2],[3,4],[4,1],[5,3]]
+    # map is okay
+    read_points_data(sample_point_link, points_i)
+    edges = triangulate( points_i)
+    map = points_i
 
     # edge : start node, end node and length
     matrix = edges
@@ -163,10 +245,10 @@ if __name__ == "__main__":
     # map is the set of vertex coordinate
     # matrix is the edge relation
 
-
     print("The algorithm starts")
     start_time =  time.time()
     s = buildGraph(map,matrix)
+    minimum_length = s.mean
     print("The graph has been built. ")
     points = np.array(map)
     plt.figure(figsize=(10, 10))
@@ -203,7 +285,7 @@ if __name__ == "__main__":
     record.append(s.edgeList[current_proposal.id])
     while len(bd_f) >1:
         for edge in bd_f:
-            print(edge.id)
+            print(edge.id,end=" ")
             edge_anti = s.edgeList[current_proposal.anti]
             if (edge.fro == current_proposal.to and edge.id != edge_anti.id) or len(bd_f)==2:
                 record.append(edge)
@@ -214,15 +296,16 @@ if __name__ == "__main__":
     co = []
     for edge in record:
         str = "edge (%d) is from %d to %d"  % (edge.id,edge.fro,edge.to)
-        print(str)
+        #print(str)
         point_id = edge.fro
         point = s.verList[point_id]
         str = "point (%d) is at %d, %d"  % (point.id,point.x,point.y)
-        print(str)
+        #print(str)
         co.append([point.x,point.y])
     from shapely.geometry import Polygon
     polygon = Polygon(co)
     print(polygon.area)
+
     # Othe file to store data
     out_link_arr = output_link.split("/",4)
     new_folder = output_link.replace(out_link_arr[-1],"")
@@ -244,7 +327,16 @@ if __name__ == "__main__":
     folder_link2 = os.getcwd() + "/" + new_folder2
     if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
         os.makedirs(folder_link2)
-    file_t = open(output_link2, "w")
+        print(folder_link2)
+    output_link2_array = output_link2.split("/",4)
+    storage = os.getcwd()+"/"+output_link2
+    print(storage)
+    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+        os.makedirs(folder_link2.replace(output_link2_array[-1]),"")
+        print(folder_link2)
+
+    file_t = open(storage, "w")
     s = "%.8s s" % dtime
     file_t.write(s)
     file_t.close()
+
