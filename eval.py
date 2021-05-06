@@ -68,10 +68,19 @@ def eval(image,file_link,output_link,output_link2):
     print("intersection_area:%f" % intersection_area)
     print("missing area:%f" % false_img_area)
     print("false predicted area:%f" % true_empty_area)
-    accuracy = intersection_area/(intersection_area + false_img_area)
-    print("Accuracy: %f" % accuracy)
+    print("\n")
+
     iou = intersection_area / ((m.area) + false_img_area)
     print("IOU:%f" % iou)
+    recall = intersection_area/(intersection_area + false_img_area)
+    print("Recall: %f" % recall)
+    precision = intersection_area / (intersection_area + true_empty_area)
+    print("Precision: %f" % precision)
+    F1_score = 2 * precision * recall / (precision + recall)
+    print("F1: %f" % F1_score)
+
+    plt.clf()
+    plt.cla()
     plt.plot(xpoints, ypoints, 'o',color='#0099CC',markersize=1.0)
     plt.plot(xpoints_t, ypoints_t,'o', color='#CCCCCC',alpha=0.2,markersize=1.0)
     plt.plot(xpoints_f, ypoints_f,'o',color='#FF6666',markersize=1.0)
@@ -84,10 +93,14 @@ def eval(image,file_link,output_link,output_link2):
     folder_link2 = os.getcwd() + "/" + new_folder2
     if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
         os.makedirs(folder_link2)
+
     file_t = open(output_link2, "w")
-    s = "%f %f %f %f %f" % (accuracy,iou,intersection_area,false_img_area,true_empty_area)
+    s = "%f %f %f %f" % (iou,precision,recall,F1_score)
     print(new_folder2 +out_link_arr2[-1][:-5]+".png")
     plt.savefig(new_folder2 +out_link_arr2[-1][:-5]+".png")
-    plt.show()
+    #plt.show()
+    plt.close()
     file_t.write(s)
     file_t.close()
+
+    return [iou,precision,recall,F1_score]

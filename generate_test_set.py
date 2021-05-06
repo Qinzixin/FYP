@@ -39,8 +39,11 @@ def generate_test_set(link,density):
             s =  str(w) + " " + str(height - h)+ "\n"
             fo.write(s)
     plt.show()
+    plt.cla()
+    plt.close("all")
     fo.close()
-    plt.show()
-    plt.figure()
+    #plt.show()
+    #plt.figure()
+    #plt.close()
     print("file %s has been generated" % out_link)
     return out_link

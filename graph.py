@@ -32,7 +32,7 @@ class Graph:
         self.round = self.round + 1
         save_link = "image/Elimination/%d.png" % self.round
         plt.savefig(save_link,dpi=200)
-        plt.show()
+        #plt.show()
 
 
     def __init__(self):
@@ -127,15 +127,75 @@ class Graph:
             return None
 
     # 图变化后需要重新生成
-    def replace_by_vertex(self, e_id, transition_id, change):
-        def generate_rpl_vertex():
-            self.vertex_repl.clear()
-            for edge in self.edgeList.values():
-                vertex = edge.to  # vertex is an id
-                self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+    def the_anti_clockwise_edge(self, e_id, transition_id):
+        def get_angle(edge):
+            return edge.angle
 
+        begin_edge = self.edgeList[e_id]
+        # print("\nstarting edge ", e_id)
+        trans_vertex = self.verList.get(transition_id)
+        # print("transition point ",  transition_id)
+        list = copy.copy(trans_vertex.edges)
+        # print("the list is")
+
+        cardinality = len(list)
+        for j in range(cardinality):
+            if list[j].to == self.edgeList[e_id].fro:
+                list.pop(j)
+                break
+            elif (len(list) == cardinality):
+                j += 1
+
+        for edge in list:
+            vec1_x = self.verList[begin_edge.fro].x - self.verList[begin_edge.to].x
+            vec1_y = self.verList[begin_edge.fro].y - self.verList[begin_edge.to].y
+            vec2_x = self.verList[edge.to].x - self.verList[edge.fro].x
+            vec2_y = self.verList[edge.to].y - self.verList[edge.fro].y
+            dot = vec2_x * vec1_y - vec1_x * vec2_y
+            modulus_1 = math.sqrt(math.pow(vec1_x, 2) + math.pow(vec1_y, 2))
+            modulus_2 = math.sqrt(math.pow(vec2_x, 2) + math.pow(vec2_y, 2))
+            if not modulus_1*modulus_2==0:
+                inner = (vec1_x * vec2_x + vec1_y * vec2_y)
+                result = inner / (modulus_1 * modulus_2)
+
+                if dot > 0:
+                    cos_theta = result  # big bug!!! avoid using arc cos!!!
+                else:
+                    cos_theta = -2 - result
+            else:
+                cos_theta = -5
+            # print("edge candidate:",edge.id )#,vec1_x, vec1_y , vec2_x , vec2_y ,cos_theta)
+            edge.angle = cos_theta
+        sorted_edges = sorted(list, key=get_angle)
+        # for edge in sorted_edges:
+        # print("angle = %s" % edge.angle)
+        # print(self.verList[edge.fro].x,self.verList[edge.fro].y,self.verList[edge.to].x,self.verList[edge.to].y)
+
+        if sorted_edges and trans_vertex:
+            next_edge = sorted_edges[0]
+            # print("next edge:")
+            # print(next_edge.id)
+            return next_edge.id
+        else:
+            return None
+
+
+    # 图变化后需要重新生成
+    def generate_rpl_vertex_new(self,origin,vertex,deleted_edge):
+        deleted_edge = self.vertex_repl[origin,vertex]
+        anti_id = self.edgeList[deleted_edge].anti
+        next_edge = self.vertex_repl[anti_id, vertex]
+        self.vertex_repl[origin, vertex] = next_edge
+
+    def generate_rpl_vertex(self):
+        self.vertex_repl.clear()
+        for edge in self.edgeList.values():
+            vertex = edge.to  # vertex is an id
+            self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+
+    def replace_by_vertex(self, e_id, transition_id, change):
         if change == True:
-            generate_rpl_vertex()
+            self.generate_rpl_vertex()
         return self.vertex_repl.get((e_id, transition_id), "None")
 
     def get_vertex_set(self):
@@ -209,7 +269,8 @@ class Graph:
 
         for edge in self.edgeList.values():
             vertex = edge.to  # vertex is an id
-            self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+            v2 = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+            self.vertex_repl[edge.id, vertex] = v2
 
         def three_edge_trial(e):
             t1 = self.replace_by_vertex(e, self.edgeList[e].to,False)
@@ -294,7 +355,7 @@ class Graph:
         def reveal2(edge_id):
             reveal = -1
             edge = self.edgeList[edge_id]
-            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,True)
+            reveal_edge_0 = self.replace_by_vertex(get_anti_edge(edge_id), edge.fro,False)
 
             reveal_edge_1 = self.replace_by_vertex(edge_id, edge.to,False)
             inner_vertex = self.replace_by_edge(edge.to, reveal_edge_1,False)
@@ -310,7 +371,7 @@ class Graph:
             else:
                 #reveal = reveal_edge_0
                 anti_edge =self.edgeList[self.edgeList[edge_id].anti]
-                r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to,True)
+                r2_id = self.replace_by_vertex(anti_edge.id,anti_edge.to,False)
                 r2 = self.edgeList[r2_id]
                 vertex = r2.to
             return vertex
@@ -331,23 +392,44 @@ class Graph:
             if regular(e) and self.edgeList[e].length>l:
                 dart_1 = e
                 dart_2 = self.edgeList[e].anti
-                r1 = reveal(dart_1)
+                r1 = reveal(dart_1) #
                 self.edgeList[r1].is_boundary = True
+                self.edgeList[self.edgeList[r1].anti].is_boundary = True
                 vertex_r = self.edgeList[r1].to
                 self.verList[vertex_r].bd = True
                 r2 = self.vertex_repl[r1,vertex_r]
                 self.edgeList[r2].is_boundary = True
-                # remove edge from vertex's incident edges
+                self.edgeList[self.edgeList[r2].anti].is_boundary = True
+
+                # modify dart 1 and dart 2 transition
                 start = self.edgeList[dart_1].fro
                 to = self.edgeList[dart_1].to
+
+                origin = None
+
+                for edge in self.verList[start].edges:
+                    anti_e_id = edge.anti
+                    if self.the_clockwise_edge(anti_e_id,start) == dart_1:
+                        origin = anti_e_id
+
+                self.generate_rpl_vertex_new(origin,start,dart_1)
+
+                origin2 = self.the_anti_clockwise_edge(dart_1,to)
+                anti_e_id = self.edgeList[origin2].anti
+                self.generate_rpl_vertex_new(anti_e_id,to,dart_2)
+
+
+                # remove edge from vertex's incident edges
                 v_start = self.verList[start]
                 v_to = self.verList[to]
                 v_start.edges.remove(self.edgeList[e])
                 anti_e_id = self.edgeList[e].anti
                 v_to.edges.remove(self.edgeList[anti_e_id])
+
                 # remove edge from queue and delete the edge from the graph
                 self.edgeList.pop(dart_1)
                 self.edgeList.pop(dart_2)
+
                 # add reveal edge to the list
                 edge_queue.put(r1)
                 edge_queue.put(self.edgeList[r1].anti)
