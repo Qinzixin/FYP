@@ -5,17 +5,17 @@ class Vertex:
         self.y = y
         self.bd = False
 
-        self.connectedTo = {}  # 领结列表，表示为字典，表示领居顶点
+        self.connectedTo = {}  # Adjacency list, represented as a dictionary, represents the leading vertex
         # id -> weight
 
-        self.edges = [] # 表示节点为from的情况下，边的集合，存的是edge的对象
+        self.edges = [] # When the node is from, the collection of edges stores the edge object
         # set of edges
 
 
     def print(self):
         print(self.key, self.connectedTo)
 
-    # nbr是连接的node的id
+    # nbr is the ID of the connected node
     def addNeighbor(self, nbr, weight=0):
         self.connectedTo[nbr] = weight
 

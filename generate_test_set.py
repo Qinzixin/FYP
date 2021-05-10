@@ -22,7 +22,7 @@ def generate_test_set(link,density):
     file_link = out_link.split("/",4)
     import os
     new_folder = (os.getcwd() + out_link).replace(file_link[-1], "")
-    if not os.path.exists(new_folder):  # 判断当前路径是否存在，没有则创建new文件夹
+    if not os.path.exists(new_folder):  # if the path does not exist, create new folder
         os.makedirs(new_folder)
     fo = open(out_link[1:], 'w')
     plt.figure()
@@ -39,8 +39,8 @@ def generate_test_set(link,density):
             s =  str(w) + " " + str(height - h)+ "\n"
             fo.write(s)
     plt.show()
-    plt.cla()
-    plt.close("all")
+    #plt.cla()
+    #plt.close("all")
     fo.close()
     #plt.show()
     #plt.figure()

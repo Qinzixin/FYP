@@ -64,7 +64,7 @@ class Graph:
     def get_edge_set(self):
         return self.edgeList
 
-    # 调用的 edgeList
+    # call edgeList
     def replace_by_edge(self, v_id, e_id,change):
         def generate_rpl_edge():
             for edge in self.edgeList.values():  # edge is the object
@@ -73,7 +73,7 @@ class Graph:
             generate_rpl_edge()  # the dictionary for all edge's linkage relationship
         return self.edge_repl.get((v_id, e_id), "None")
 
-    # 图变化后需要重新生成
+    # may needs regeneration when the graph is changed
     def the_clockwise_edge(self, e_id, transition_id):
         def get_angle(edge):
             return edge.angle
@@ -106,7 +106,7 @@ class Graph:
                 result = inner / (modulus_1 * modulus_2)
 
                 if dot > 0:
-                    cos_theta = result  # big bug!!! avoid using arc cos!!!
+                    cos_theta = result  # avoid using arc cos since it introduces too much float error
                 else:
                     cos_theta = -2 - result
             else:
@@ -126,7 +126,7 @@ class Graph:
         else:
             return None
 
-    # 图变化后需要重新生成
+    # may need regenerationa when graph is modified
     def the_anti_clockwise_edge(self, e_id, transition_id):
         def get_angle(edge):
             return edge.angle
@@ -159,7 +159,7 @@ class Graph:
                 result = inner / (modulus_1 * modulus_2)
 
                 if dot > 0:
-                    cos_theta = result  # big bug!!! avoid using arc cos!!!
+                    cos_theta = result  # avoid using arc cosine function
                 else:
                     cos_theta = -2 - result
             else:
@@ -180,7 +180,7 @@ class Graph:
             return None
 
 
-    # 图变化后需要重新生成
+    # may need regenerationa when graph is modified
     def generate_rpl_vertex_new(self,origin,vertex,deleted_edge):
         deleted_edge = self.vertex_repl[origin,vertex]
         anti_id = self.edgeList[deleted_edge].anti
@@ -191,7 +191,7 @@ class Graph:
         self.vertex_repl.clear()
         for edge in self.edgeList.values():
             vertex = edge.to  # vertex is an id
-            self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+            self.vertex_repl[edge.id, vertex] = self.the_clockwise_edge(edge.id, vertex)  # the id of the closest edge connected
 
     def replace_by_vertex(self, e_id, transition_id, change):
         if change == True:
@@ -269,7 +269,7 @@ class Graph:
 
         for edge in self.edgeList.values():
             vertex = edge.to  # vertex is an id
-            v2 = self.the_clockwise_edge(edge.id, vertex)  # 连接的最近的边的id
+            v2 = self.the_clockwise_edge(edge.id, vertex)  # id of the closest edge connected
             self.vertex_repl[edge.id, vertex] = v2
 
         def three_edge_trial(e):
@@ -390,6 +390,7 @@ class Graph:
             e = edge_queue.get()
             e2 = edge_queue.get()
             if regular(e) and self.edgeList[e].length>l:
+                self.paint()
                 dart_1 = e
                 dart_2 = self.edgeList[e].anti
                 r1 = reveal(dart_1) #
@@ -436,4 +437,6 @@ class Graph:
                 edge_queue.put(r2)
                 edge_queue.put(self.edgeList[r2].anti)
                 a = list(edge_queue.queue)
+
+                #visualize the result
                 self.paint()

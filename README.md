@@ -1,9 +1,4 @@
-# Current Job
-- Current Job
-    -   **Need to construct comparison between 3 algorithm**
-    -   **Need to optimize the parameter setting on "L" dataset**(5.1 done)
-    -   **Complete the paper**
-
+   
 # FYP
 This is the Final Year Project code repository for the project **shape approximation**.
 
@@ -15,19 +10,12 @@ for the chi algorithm.
 Candidate: Zixin Qin
 
 Type of study: Theoretical Study
+# Running Method
+
+run experiment.py
 
 # Developer's notes
 
-- Experiment status
-
-    | Image | Sample rate (log) | L value | Accuracy | Jaccard Index | Time consumption |
-    |  ----  | ----  | ---- |----  | ----  | ----  |
-    | L | -3.1 | 100 | 0.910806 |  0.903326 | 20.84901 |
-    | L | -3.1 | 200 | 0.939103 | 0.805586 | 10.06925 |
-
-- To be implemented further
-    - the code need to be merged to record time consumption and to be more Object-oriented
-    - Is there a need to process the whole data set?
 
 - Implemented Functionalities
   - **replace_by_edge** done, rather trival (2021.1.6)
@@ -54,11 +42,14 @@ Type of study: Theoretical Study
         - (3.16) calculate the maze of the CP
         - (3.17) finish experiment on image "L"
    - (4.9) **Automate the learning process**
+   -   **optimize the parameter setting on "L" dataset**(5.1 done)
+   -    the code need to be merged to record time consumption and to be more Object-oriented
+   -  to process the whole data set?
+   -   **construct comparison between 3 algorithm** (5.6 done)
         
 - Tips
      - It is important to download python package with "--target" location, then update the imterpretor in pycharm
      - Begin test in small data set.
-   - ** conduct experiment**
 
 # Key dates
 Showcase：6th week (4.x)

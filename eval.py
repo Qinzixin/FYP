@@ -40,19 +40,20 @@ def eval(image,file_link,output_link,output_link2):
             # transformed coordinate
             i = w
             j = height - h
+            # Corrrect (TP)
             if  Point(i,j).intersects(m)== True and img[h,w] != 255:
                 list_x.append(h)
                 list_y.append(w)
                 #print("%f %f" % (i,j))
                 intersection_area = intersection_area + 1
 
-            # 没预测的
+            # Missing (FN)
             elif img[h,w] != 255 and Point(i,j).intersects(m)== False:
                 false_img_area = false_img_area + 1
                 list_x_o.append(h)
                 list_y_o.append(w)
 
-            # 多预测的
+            # Miss predicted (FP)
             elif Point(i,j).intersects(m)== True and img[h,w] == 255 :
                 true_empty_area = true_empty_area + 1
                 list_x_f.append(h)
@@ -91,7 +92,8 @@ def eval(image,file_link,output_link,output_link2):
     new_folder2 = output_link.replace(out_link_arr2[-1], "")
     import os
     folder_link2 = os.getcwd() + "/" + new_folder2
-    if not os.path.exists(folder_link2):  # 判断当前路径是否存在，没有则创建new文件夹
+    # Judge whether the current path exists or not, and create a new folder if not
+    if not os.path.exists(folder_link2):
         os.makedirs(folder_link2)
 
     file_t = open(output_link2, "w")

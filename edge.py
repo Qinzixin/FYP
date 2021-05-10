@@ -1,7 +1,6 @@
 class Edge:
     def __init__(self,key, fro, to, gradient,length,anti):
         self.id = key;
-        #self.weight = weight;
         self.fro = fro;
         self.to = to;
         self.gradient = gradient;
